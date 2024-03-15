@@ -1,4 +1,4 @@
-package com.example.delivery
+package ru.kpfu.itis.nikolaev.delivery
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.delivery"
+    namespace = "ru.kpfu.itis.nikolaev.delivery"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.delivery"
+        applicationId = "ru.kpfu.itis.nikolaev.delivery"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -26,6 +26,10 @@ android {
             )
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -36,11 +40,19 @@ android {
 }
 
 dependencies {
-
+    val viewBindingDelegateVersion = "1.5.9"
+    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    val navVersion = "2.7.5"
+    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
+
 }

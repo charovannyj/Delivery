@@ -1,4 +1,4 @@
-package com.example.delivery
+package ru.kpfu.itis.nikolaev.delivery
 
 import org.junit.Test
 
