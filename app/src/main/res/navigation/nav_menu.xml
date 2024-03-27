@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/firstFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.FirstFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.ui.FirstFragment"
         android:label="fragment_first"
         tools:layout="@layout/fragment_first" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.SecondFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.ui.SecondFragment"
         android:label="fragment_second"
         tools:layout="@layout/fragment_second" >
         <action
