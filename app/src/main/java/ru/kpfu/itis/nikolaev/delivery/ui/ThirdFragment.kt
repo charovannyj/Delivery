@@ -5,26 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentFirstBinding
-import by.kirich1409.viewbindingdelegate.viewBinding
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.nikolaev.delivery.R
+import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentThirdBinding
 
-class FirstFragment : Fragment() {
-    private val viewBinding : FragmentFirstBinding by viewBinding(FragmentFirstBinding::bind)
+
+class ThirdFragment : Fragment() {
+
+    private val viewBinding: FragmentThirdBinding by viewBinding(FragmentThirdBinding::bind)
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        return inflater.inflate(R.layout.fragment_third, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(viewBinding){
-            btn.setOnClickListener{
-                findNavController().navigate(R.id.action_firstFragment_to_secondFragment)
-            }
-        }
     }
+
 }
