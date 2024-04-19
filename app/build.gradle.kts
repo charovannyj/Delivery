@@ -16,6 +16,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt{
+            arguments{
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {
@@ -42,6 +48,7 @@ android {
 val daggerVersion = "2.36"
 val dagger = "com.google.dagger:dagger:$daggerVersion"
 val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+
 dependencies {
     val viewBindingDelegateVersion = "1.5.9"
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion")
@@ -60,13 +67,16 @@ dependencies {
 
     val roomVersion = "2.6.1"
 
-    implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     implementation(dagger)
     kapt(daggerCompiler)
+
+    //add livedatas dependencies
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
 
 

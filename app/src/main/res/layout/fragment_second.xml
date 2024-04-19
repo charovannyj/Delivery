@@ -32,7 +32,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="69dp"
         android:radius="150dp"
-        android:text="я клиент!"
+        android:text="я клиент"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

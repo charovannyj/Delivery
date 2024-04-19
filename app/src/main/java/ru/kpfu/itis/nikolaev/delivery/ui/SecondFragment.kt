@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.kpfu.itis.nikolaev.delivery.MainDb
 import ru.kpfu.itis.nikolaev.delivery.R
+import ru.kpfu.itis.nikolaev.delivery.data.db.entity.UserEntity
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSecondBinding
 
 class SecondFragment : Fragment(R.layout.fragment_second) {
@@ -24,6 +28,23 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
         button.isEnabled = btnRoleIsClicked && etEmailIsTyped && etPasswordIsTyped
     }
 
+    private fun btnRoleClick(view1: View, view2: View) {
+        btnRoleIsClicked = true
+        view1.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.purple_500
+            )
+        )
+        view2.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.purple_200
+            )
+        )
+        checkReady()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val emailRegex =
@@ -34,36 +55,10 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
             btnEnter.isEnabled = false
 
             btnClient.setOnClickListener {
-                btnRoleIsClicked = true
-                btnClient.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_500
-                    )
-                )
-                btnCourier.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                checkReady()
+                btnRoleClick(btnClient, btnCourier)
             }
             btnCourier.setOnClickListener {
-                btnRoleIsClicked = true
-                btnClient.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                btnCourier.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_500
-                    )
-                )
-                checkReady()
+                btnRoleClick(btnCourier, btnClient)
             }
             etEmail.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
@@ -112,7 +107,18 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
             btnEnter.setOnClickListener {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
-                findNavController().navigate(R.id.action_secondFragment_to_thirdFragment)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val db = MainDb.getDb(requireContext().applicationContext)
+                    val user = UserEntity(null, "a", "b", email, password)
+                    db.getDao().insertUser(user)
+                    //withContext()
+                    withContext(Dispatchers.Main){
+                        findNavController().navigate(R.id.action_secondFragment_to_thirdFragment)
+                    }
+                }
+                /*Thread {
+                    db.getDao().insertUser(user)
+                }.start()*/
 
             }
         }
