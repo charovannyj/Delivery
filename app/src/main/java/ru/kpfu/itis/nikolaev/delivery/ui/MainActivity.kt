@@ -1,19 +1,14 @@
-package ru.kpfu.itis.nikolaev.delivery
+package ru.kpfu.itis.nikolaev.delivery.ui
 
 
 import android.os.Bundle
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import ru.kpfu.itis.nikolaev.delivery.databinding.ActivityMainBinding
-import kotlin.random.Random
 import by.kirich1409.viewbindingdelegate.viewBinding
+import ru.kpfu.itis.nikolaev.delivery.R
 
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {

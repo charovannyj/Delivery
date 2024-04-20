@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bage"
-    tools:context=".ui.FirstFragment">
+    tools:context=".ui.fragments.FirstFragment">
 
     <TextView
         android:textColor="@color/black"

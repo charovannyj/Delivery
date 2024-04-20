@@ -1,4 +1,4 @@
-package ru.kpfu.itis.nikolaev.delivery.ui
+package ru.kpfu.itis.nikolaev.delivery.ui.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,9 +13,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.kpfu.itis.nikolaev.delivery.MainDb
 import ru.kpfu.itis.nikolaev.delivery.R
-import ru.kpfu.itis.nikolaev.delivery.data.db.entity.UserEntity
+import ru.kpfu.itis.nikolaev.delivery.di.ServiceLocator
+import ru.kpfu.itis.nikolaev.delivery.model.user.usecase.UserSignUpModel
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSecondBinding
 
 class SecondFragment : Fragment(R.layout.fragment_second) {
@@ -108,14 +108,15 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
                 lifecycleScope.launch(Dispatchers.IO) {
-                    val db = MainDb.getDb(requireContext().applicationContext)
-                    val user = UserEntity(null, "a", "b", email, password)
-                    db.getDao().insertUser(user)
-                    //withContext()
-                    withContext(Dispatchers.Main){
+                    val db = ServiceLocator.database
+                    val user = UserSignUpModel( email, password)
+                    db.userDao().insertUser("a", "b", email, password)
+                    /*withContext(Dispatchers.Main){
                         findNavController().navigate(R.id.action_secondFragment_to_thirdFragment)
-                    }
+                    }*/
                 }
+                /*findNavController().navigate(R.id.action_secondFragment_to_thirdFragment)*/
+
                 /*Thread {
                     db.getDao().insertUser(user)
                 }.start()*/

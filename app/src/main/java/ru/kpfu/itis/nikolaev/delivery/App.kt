@@ -1,7 +1,7 @@
-/*
 package ru.kpfu.itis.nikolaev.delivery
 
 import android.app.Application
+import ru.kpfu.itis.nikolaev.delivery.di.ServiceLocator
 
 class App : Application() {
 
@@ -9,4 +9,4 @@ class App : Application() {
         super.onCreate()
         ServiceLocator.provideApplicationContext(this)
     }
-}*/
+}

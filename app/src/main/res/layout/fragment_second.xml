@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bage"
-    tools:context=".ui.SecondFragment">
+    tools:context=".ui.fragments.SecondFragment">
 
 
     <com.google.android.material.button.MaterialButton
