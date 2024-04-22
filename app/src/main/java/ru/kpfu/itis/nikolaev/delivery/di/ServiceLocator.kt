@@ -11,7 +11,7 @@ object ServiceLocator {
     val database: MainDb by lazy {
         val context = applicationContext ?: throw Exception()
         Room.databaseBuilder(
-            context, MainDb::class.java, "est.db"
+            context, MainDb::class.java, MainDb.DATABASE_NAME
         ).build()
     }
 

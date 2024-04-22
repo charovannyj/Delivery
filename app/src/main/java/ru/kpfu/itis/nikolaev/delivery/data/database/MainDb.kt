@@ -7,7 +7,8 @@ import ru.kpfu.itis.nikolaev.delivery.data.entities.UserEntity
 
 @Database(entities = [UserEntity::class], version = 1)
 abstract class MainDb : RoomDatabase(){
-    abstract fun userDao() : Dao
-    companion object{
+    abstract val userDao: Dao
+    companion object {
+        const val DATABASE_NAME = "user"
     }
 }

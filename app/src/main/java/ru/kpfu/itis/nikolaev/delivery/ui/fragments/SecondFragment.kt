@@ -14,8 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.nikolaev.delivery.R
+import ru.kpfu.itis.nikolaev.delivery.data.repository.UsersRepository
 import ru.kpfu.itis.nikolaev.delivery.di.ServiceLocator
-import ru.kpfu.itis.nikolaev.delivery.model.user.usecase.UserSignUpModel
+import ru.kpfu.itis.nikolaev.delivery.model.user.UserSignUpModel
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSecondBinding
 
 class SecondFragment : Fragment(R.layout.fragment_second) {
@@ -108,9 +109,7 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
                 lifecycleScope.launch(Dispatchers.IO) {
-                    val db = ServiceLocator.database
-                    val user = UserSignUpModel( email, password)
-                    db.userDao().insertUser("a", "b", email, password)
+                    UsersRepository.signUp(UserSignUpModel( "a", "b", "email", "password"))
                     /*withContext(Dispatchers.Main){
                         findNavController().navigate(R.id.action_secondFragment_to_thirdFragment)
                     }*/
