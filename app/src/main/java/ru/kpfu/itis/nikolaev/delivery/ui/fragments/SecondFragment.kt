@@ -106,19 +106,16 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
                 }
             })
             btnEnter.setOnClickListener {
+                val name = etName.text.toString()
+                val surname = etSurname.text.toString()
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
                 lifecycleScope.launch(Dispatchers.IO) {
-                    UsersRepository.signUp(UserSignUpModel( "a", "b", "email", "password"))
-                    /*withContext(Dispatchers.Main){
+                    UsersRepository.signUp(UserSignUpModel( name, surname, email, password))
+                    withContext(Dispatchers.Main){
                         findNavController().navigate(R.id.action_secondFragment_to_thirdFragment)
-                    }*/
+                    }
                 }
-                /*findNavController().navigate(R.id.action_secondFragment_to_thirdFragment)*/
-
-                /*Thread {
-                    db.getDao().insertUser(user)
-                }.start()*/
 
             }
         }
