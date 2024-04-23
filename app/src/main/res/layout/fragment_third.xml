@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/bage"
+    android:background="@color/beige"
 
     tools:context=".ui.fragments.ThirdFragment">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_client"
+        android:id="@+id/btn_fast_shipping"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="60dp"
         app:cornerRadius="20dp"
         android:radius="150dp"
-        android:text="хочу отправить товар быстро и прямо сейчас!"
+        android:text="@string/fast_shipping"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,17 +25,17 @@
     </com.google.android.material.button.MaterialButton>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_courier"
+        android:id="@+id/btn_enter_in_app"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="68dp"
         app:cornerRadius="20dp"
         android:radius="150dp"
-        android:text="перейти в приложение"
+        android:text="@string/go_in_app"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_client">
+        app:layout_constraintTop_toBottomOf="@id/btn_fast_shipping">
 
 
     </com.google.android.material.button.MaterialButton>

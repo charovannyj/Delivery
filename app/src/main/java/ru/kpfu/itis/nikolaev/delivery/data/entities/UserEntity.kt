@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey
 data class UserEntity(
     @PrimaryKey (autoGenerate = true)
     val id: Int?,
+    val role : String,
     val name: String,
     @ColumnInfo(name = "second_name")
     val secondName: String,

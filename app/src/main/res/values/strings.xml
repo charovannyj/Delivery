@@ -6,4 +6,22 @@
     <string name="write_a_count_questions">write_a_count_questions</string>
     <string name="welcome1">добро пожаловать</string>
     <string name="welcome2">это приложение по доставке товаров</string>
+    <string name="i_am_courier">я курьер</string>
+    <string name="i_am_client">я клиент</string>
+    <string name="enter_in_app">войти</string>
+    <string name="fast_shipping">хочу отправить товар быстро и прямо сейчас!</string>
+    <string name="go_in_app">перейти в приложение</string>
+    <string name="write_a_password">введи пароль</string>
+    <string name="write_an_email">введи почту</string>
+    <string name="write_a_surname">введи фамилию</string>
+    <string name="write_a_name">введи имя</string>
+    <string name="from">откуда</string>
+    <string name="to">куда</string>
+    <string name="delivery_cost">стоимость доставки</string>
+    <string name="dimensions">габариты</string>
+    <string name="send">отправить</string>
+    <string name="main">главная</string>
+    <string name="enter_your_order_number">введи номер заказа</string>
+    <string name="track_order">отследить заказ</string>
+    <string name="my_orders">мои заказы</string>
 </resources>

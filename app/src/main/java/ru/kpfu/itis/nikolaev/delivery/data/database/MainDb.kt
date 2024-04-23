@@ -9,6 +9,6 @@ import ru.kpfu.itis.nikolaev.delivery.data.entities.UserEntity
 abstract class MainDb : RoomDatabase(){
     abstract val userDao: Dao
     companion object {
-        const val DATABASE_NAME = "test.db"
+        const val DATABASE_NAME = "userrs"
     }
 }

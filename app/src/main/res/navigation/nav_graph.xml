@@ -32,7 +32,20 @@
         android:label="fragment_third"
         tools:layout="@layout/fragment_third" >
         <action
-            android:id="@+id/action_thirdFragment_to_secondFragment"
-            app:destination="@id/secondFragment" />
+            android:id="@+id/action_thirdFragment_to_fastShippingFragment"
+            app:destination="@id/fastShippingFragment" />
+        <action
+            android:id="@+id/action_thirdFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/fastShippingFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.FastShippingFragment"
+        android:label="fragment_fast_shipping"
+        tools:layout="@layout/fragment_fast_shipping" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
 </navigation>

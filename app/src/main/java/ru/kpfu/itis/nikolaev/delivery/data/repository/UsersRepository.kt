@@ -8,7 +8,7 @@ object UsersRepository {
     suspend fun signUp(userSignUpModel: UserSignUpModel) {
         with(userSignUpModel) {
             ServiceLocator.database.userDao.insertUser(
-                name = name, second_name = secondName, email = email, password = password
+                role = role, name = name, second_name = secondName, email = email, password = password
             )
         }
     }
