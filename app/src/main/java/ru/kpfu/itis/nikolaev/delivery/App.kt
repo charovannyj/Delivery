@@ -11,6 +11,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         ServiceLocator.provideApplicationContext(this)
-
+        MapKitFactory.setApiKey(ru.kpfu.itis.nikolaev.delivery.BuildConfig.MAPKIT_API_KEY)
     }
 }

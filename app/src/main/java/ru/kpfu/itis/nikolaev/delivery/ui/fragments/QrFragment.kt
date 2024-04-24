@@ -1,11 +1,16 @@
 package ru.kpfu.itis.nikolaev.delivery.ui.fragments
 
+import android.graphics.Bitmap
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentQrBinding
 
@@ -23,5 +28,19 @@ class QrFragment : Fragment(R.layout.fragment_qr) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        with(viewBinding){
+            val image = imageView
+            val edittext = et
+            val bGenerate = btn
+            bGenerate?.setOnClickListener {
+                try {
+                    val barcodeEncode: BarcodeEncoder = BarcodeEncoder()
+                    val bitmap : Bitmap = barcodeEncode.encodeBitmap(edittext.getText().toString(), BarcodeFormat.QR_CODE, 750, 750)
+                    image?.setImageBitmap(bitmap)
+                } catch (e: WriterException){}
+            }
+            
+        }
     }
+
 }
