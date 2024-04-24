@@ -24,4 +24,5 @@
     <string name="enter_your_order_number">введи номер заказа</string>
     <string name="track_order">отследить заказ</string>
     <string name="my_orders">мои заказы</string>
+    <string name="thing_cost">стоимость товара</string>
 </resources>
