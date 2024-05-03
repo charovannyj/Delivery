@@ -25,4 +25,8 @@
     <string name="track_order">отследить заказ</string>
     <string name="my_orders">мои заказы</string>
     <string name="thing_cost">стоимость товара</string>
+    <string name="result_sum">итоговая стоимость: Х рублей</string>
+    <string name="courier">курьер</string>
+    <string name="pick_up_point">пункт выдачи</string>
+    <string name="id_recipient">id получателя</string>
 </resources>

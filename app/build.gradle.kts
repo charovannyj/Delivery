@@ -4,7 +4,9 @@ plugins {
     id("kotlin-kapt")
 }
 
+
 android {
+
     namespace = "ru.kpfu.itis.nikolaev.delivery"
     compileSdk = 34
 
@@ -50,6 +52,7 @@ val dagger = "com.google.dagger:dagger:$daggerVersion"
 val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
 
 dependencies {
+    implementation("com.yandex.android:maps.mobile:4.6.1-lite")
     val viewBindingDelegateVersion = "1.5.9"
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion")
     implementation("androidx.core:core-ktx:1.12.0")
@@ -77,8 +80,5 @@ dependencies {
 
     //add livedatas dependencies
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
-
-
-
-
+    implementation("com.yandex.android:maps.mobile:4.6.1-lite")
 }

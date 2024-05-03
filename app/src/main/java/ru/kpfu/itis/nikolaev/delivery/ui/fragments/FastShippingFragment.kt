@@ -8,12 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import ru.kpfu.itis.nikolaev.delivery.Keys
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentFastShippingBinding
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentFirstBinding
 
 
-class FastShippingFragment : Fragment() {
+class FastShippingFragment : Fragment(R.layout.fragment_fast_shipping) {
     private val viewBinding : FragmentFastShippingBinding by viewBinding(FragmentFastShippingBinding::bind)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

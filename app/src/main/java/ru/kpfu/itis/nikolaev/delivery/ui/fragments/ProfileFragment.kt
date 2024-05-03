@@ -1,20 +1,18 @@
 package ru.kpfu.itis.nikolaev.delivery.ui.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
-import ru.kpfu.itis.nikolaev.delivery.Keys
 import ru.kpfu.itis.nikolaev.delivery.R
-import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentMainBinding
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentProfileBinding
 
 
-class MainFragment : Fragment() {
 
-    private val viewBinding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
+    private val viewBinding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
 
 
     override fun onCreateView(
@@ -22,16 +20,10 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Keys.authorized = true
-        with(viewBinding){
-
-        }
     }
-
-
 }

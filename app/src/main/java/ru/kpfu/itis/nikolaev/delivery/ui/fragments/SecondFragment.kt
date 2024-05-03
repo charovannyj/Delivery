@@ -26,6 +26,9 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
     private var etEmailIsTyped: Boolean = false
     private var etPasswordIsTyped: Boolean = false
     private lateinit var button: Button
+    val emailRegex =
+        "(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])".toRegex()
+
     fun checkReady() {
         button.isEnabled = btnRoleIsClicked && etEmailIsTyped && etPasswordIsTyped
     }
@@ -33,9 +36,7 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val emailRegex =
-            "(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])".toRegex()
-        var role : String? = null
+        var role: String? = null
         with(viewBinding) {
             button = btnEnter
 
@@ -101,9 +102,9 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
                 val password = etPassword.text.toString()
                 lifecycleScope.launch(Dispatchers.IO) {
 
-                    UsersRepository.signUp(UserSignUpModel( role!!, name, surname, email, password))
-
-                    withContext(Dispatchers.Main){
+                    UsersRepository.signUp(UserSignUpModel(role!!, name, surname, email, password))
+                    Log.e("TAG", name)
+                    withContext(Dispatchers.Main) {
                         findNavController().navigate(R.id.thirdFragment)
                     }
                 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_mainFragment"
+        android:icon="@drawable/baseline_search_24"
+        android:title="Search"  />
+    <item
+        android:id="@+id/navigation_sendFragment"
+        android:icon="@drawable/package3_122406"
+        android:title="Delivery" />
+    <item
+        android:id="@+id/navigation_qrFragment"
+        android:icon="@drawable/qr_code_8721150"
+        android:title="Qr" />
+    <item
+        android:id="@+id/navigation_supportFragment"
+        android:icon="@drawable/help_1660114"
+        android:title="Support" />
+    <item
+        android:id="@+id/navigation_profileFragment"
+        android:icon="@drawable/baseline_person_24"
+        android:title="Profile" />
+</menu>

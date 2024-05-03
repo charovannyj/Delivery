@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="RadioButtonTextStyleNormal">
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">30sp</item>
     </style>
     <style name="RadioButtonTextStyleSelected">
-        <item name="android:textSize">40dp</item>
+        <item name="android:textSize">40sp</item>
     </style>
 </resources>
