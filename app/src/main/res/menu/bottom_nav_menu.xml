@@ -10,11 +10,11 @@
         android:title="Delivery" />
     <item
         android:id="@+id/navigation_qrFragment"
-        android:icon="@drawable/qr_code_8721150"
+        android:icon="@drawable/qrcodescan_120401"
         android:title="Qr" />
     <item
         android:id="@+id/navigation_supportFragment"
-        android:icon="@drawable/help_1660114"
+        android:icon="@drawable/person_business_call_avatar_support_user_helpdesk_customer_costumer_service_icon_228998"
         android:title="Support" />
     <item
         android:id="@+id/navigation_profileFragment"

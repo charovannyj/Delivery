@@ -38,6 +38,9 @@
             android:exported="true">
 
         </activity>
-    </application>
 
+    </application>
+    <!--<service
+        android:name="ForegroundService"
+        android:foregroundServiceType="location"/>-->
 </manifest>

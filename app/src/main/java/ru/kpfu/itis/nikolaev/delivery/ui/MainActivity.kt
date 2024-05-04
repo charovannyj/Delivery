@@ -21,7 +21,7 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.mapview.MapView
 import ru.kpfu.itis.nikolaev.delivery.Keys
 import ru.kpfu.itis.nikolaev.delivery.R
-import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSecondBinding
+
 
 
 class MainActivity : AppCompatActivity() {

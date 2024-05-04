@@ -3,27 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/firstFragment">
+    app:startDestination="@id/welcomeFragment">
 
     <fragment
-        android:id="@+id/firstFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.FirstFragment"
-        android:label="fragment_first"
-        tools:layout="@layout/fragment_first" >
+        android:id="@+id/welcomeFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
         <action
-            android:id="@+id/action_firstFragment_to_secondFragment"
-            app:destination="@id/secondFragment" />
+            android:id="@+id/action_welcomeFragment_to_authFragment"
+            app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
     </fragment>
     <fragment
-        android:id="@+id/secondFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.SecondFragment"
-        android:label="fragment_second"
-        tools:layout="@layout/fragment_second" >
+        android:id="@+id/registrationFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+
         <action
-            android:id="@+id/action_secondFragment_to_firstFragment"
-            app:destination="@id/firstFragment" />
-        <action
-            android:id="@+id/action_secondFragment_to_thirdFragment"
+            android:id="@+id/action_registrationFragment_to_thirdFragment"
             app:destination="@id/thirdFragment" />
     </fragment>
     <fragment
@@ -32,10 +33,10 @@
         android:label="fragment_third"
         tools:layout="@layout/fragment_third" >
         <action
-            android:id="@+id/action_thirdFragment_to_fastShippingFragment"
+            android:id="@+id/action_thirdFragment_to_fastShippingFragment2"
             app:destination="@id/fastShippingFragment" />
         <action
-            android:id="@+id/action_thirdFragment_to_mainFragment"
+            android:id="@+id/action_thirdFragment_to_navigation_mainFragment"
             app:destination="@id/navigation_mainFragment" />
     </fragment>
     <fragment
@@ -68,4 +69,13 @@
         android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.SupportFragment"
         android:label="fragment_support"
         tools:layout="@layout/fragment_support" />
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.AuthFragment"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth" >
+        <action
+            android:id="@+id/action_authFragment_to_thirdFragment3"
+            app:destination="@id/thirdFragment" />
+    </fragment>
 </navigation>

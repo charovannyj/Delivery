@@ -69,7 +69,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:imeOptions="actionSearch"
-            android:id="@+id/et_name"
+            android:id="@+id/et_from"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"

@@ -30,4 +30,5 @@
     <string name="pick_up_point">пункт выдачи</string>
     <string name="id_recipient">id получателя</string>
     <string name="success_payment">success_payment</string>
+    <string name="registration">Регистрация</string>
 </resources>

@@ -7,22 +7,26 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.initialize
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.data.repository.UsersRepository
-import ru.kpfu.itis.nikolaev.delivery.di.ServiceLocator
 import ru.kpfu.itis.nikolaev.delivery.model.user.UserSignUpModel
-import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSecondBinding
+import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentRegistrationBinding
 
-class SecondFragment : Fragment(R.layout.fragment_second) {
-
-    private val viewBinding: FragmentSecondBinding by viewBinding(FragmentSecondBinding::bind)
+class RegistrationFragment : Fragment(R.layout.fragment_registration) {
+    private lateinit var auth: FirebaseAuth
+    private val viewBinding: FragmentRegistrationBinding by viewBinding(FragmentRegistrationBinding::bind)
 
     private var btnRoleIsClicked: Boolean = false
 
@@ -105,17 +109,55 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
                 val surname = etSurname.text.toString()
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
-                lifecycleScope.launch(Dispatchers.IO) {
 
-                    UsersRepository.signUp(UserSignUpModel(role!!, name, surname, email, password))
-                    Log.e("TAG", name)
-                    withContext(Dispatchers.Main) {
-                        findNavController().navigate(R.id.thirdFragment)
+
+
+                Firebase.initialize(requireContext())
+                auth = FirebaseAuth.getInstance()
+
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener {  task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(
+                                requireContext(),
+                                "Account created.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                            lifecycleScope.launch(Dispatchers.IO) {
+
+                                UsersRepository.signUp(UserSignUpModel(role!!, name, surname, email, password))
+                                Log.e("TAG", name)
+                                withContext(Dispatchers.Main) {
+                                    findNavController().navigate(R.id.thirdFragment)
+                                }
+                            }
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(
+                                requireContext(),
+                                "reg failed.",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
                     }
-                }
+
+
+
+
+
+
+
+
+
+
 
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
 }

@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 
 }
 
@@ -53,6 +54,7 @@ val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
 
 dependencies {
 
+    implementation("com.google.firebase:firebase-auth:21.1.0")
     val viewBindingDelegateVersion = "1.5.9"
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion")
 
@@ -86,7 +88,6 @@ dependencies {
 
     //add livedatas dependencies
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
-    implementation("com.yandex.android:maps.mobile:4.6.1-lite")
 
 
     //scan qr
@@ -94,5 +95,16 @@ dependencies {
     implementation("me.dm7.barcodescanner:zbar:1.8.4")
 
     //yandexshtuka
-    implementation("com.yandex.android:maps.mobile:4.6.1-lite")
+    implementation("com.yandex.android:maps.mobile:4.6.1-full")
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+
+    implementation(platform("com.google.firebase:firebase-auth"))
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+
+
 }

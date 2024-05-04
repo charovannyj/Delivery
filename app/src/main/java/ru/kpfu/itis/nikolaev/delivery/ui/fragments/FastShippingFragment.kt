@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentFastShippingBinding
-import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentFirstBinding
 
 
 class FastShippingFragment : Fragment() {
