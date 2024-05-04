@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.yandex.mapkit.Animation
-import com.yandex.mapkit.GeoObject
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -44,7 +43,6 @@ import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSendBinding
-import java.lang.StringBuilder
 
 
 class SendFragment : Fragment(R.layout.fragment_send) {
@@ -81,10 +79,8 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         with(viewBinding) {
             mapView = mapview
             marker = createBitmapFromVector(R.drawable.location_map_pin_mark_icon_148684)!!
-
             mapObjectCollection = mapView.mapWindow.map.mapObjects
-            placemarkMapObject = mapObjectCollection.addPlacemark(startLocation, ImageProvider.fromBitmap(marker))
-            placemarkMapObject.addTapListener(mapObjectTapListener) //бесполезная штука, показывает корды метки заранее написанной
+
             mapView.mapWindow.map.addTapListener(tapListener)     //выделение домика
             mapView.mapWindow.map.move(
                 CameraPosition(startLocation,zoomValue,0.0f,0.0f),
@@ -100,18 +96,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         }
     }
 
-    private fun createBitmapFromVector(art: Int): Bitmap? {
-        val drawable = ContextCompat.getDrawable(requireContext(), art) ?: return null
-        val bitmap = Bitmap.createBitmap(
-            drawable.intrinsicWidth,
-            drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        ) ?: return null
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bitmap
-    }
+
 
     //выделение домика
     private val tapListener = object : GeoObjectTapListener {
@@ -131,7 +116,12 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         override fun onMapTap(map: Map, point: Point) {
             searchSession = searchManager.submit(point, 20, SearchOptions(), searchListener)
         }
-        override fun onMapLongTap(map: Map, point: Point) {}
+        override fun onMapLongTap(map: Map, point: Point) {
+            Toast.makeText(requireContext(), "Адрес заказа установлен", Toast.LENGTH_SHORT).show()
+            mapObjectCollection.clear()
+
+            placemarkMapObject = mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(marker))
+        }
     }
 
 
@@ -166,16 +156,27 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             }
     }
 
-    //бесполезная штука, показывает корды метки заранее написанной
+    /*//бесполезная штука, показывает корды метки заранее написанной
     private val mapObjectTapListener = object : MapObjectTapListener{
         override fun onMapObjectTap(mapObject: MapObject, point: Point): Boolean{
             Toast.makeText(requireContext(), point.latitude.toString(), Toast.LENGTH_SHORT).show()
             return true
         }
+    }*/
+
+
+    private fun createBitmapFromVector(art: Int): Bitmap? {
+        val drawable = ContextCompat.getDrawable(requireContext(), art) ?: return null
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        ) ?: return null
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
     }
-
-
-
 
     override fun onStart() {
         mapView.onStart()
