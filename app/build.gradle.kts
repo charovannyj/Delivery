@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId = "ru.kpfu.itis.nikolaev.delivery"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         buildConfigField("String", "MAPKIT_API_KEY", "\"$mapkitApiKey\"")
