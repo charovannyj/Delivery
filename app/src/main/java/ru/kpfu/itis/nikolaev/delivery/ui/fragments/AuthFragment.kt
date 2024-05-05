@@ -44,7 +44,6 @@ class AuthFragment : Fragment() {
             btnEnter.setOnClickListener {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
-
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener{ task ->
                         if (task.isSuccessful) {

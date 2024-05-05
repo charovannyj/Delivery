@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -78,92 +79,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
     }
 
-    private fun removeStartMarker() {
-        startMarker?.let {
-            mapObjectCollection.remove(it)
-            startMarker = null
-        }
-    }
 
-    private fun removeFinishMarker() {
-        finishMarker?.let {
-            mapObjectCollection.remove(it)
-            finishMarker = null
-        }
-    }
-
-    private fun submitQueryFrom(query: String) {
-        searchSession = searchManager.submit(
-            query,
-            VisibleRegionUtils.toPolygon(mapView.mapWindow.map.visibleRegion),
-            SearchOptions(),
-            searchListenerFromTextToMapFrom
-        )
-    }
-
-    private fun submitQueryTo(query: String) {
-        searchSession = searchManager.submit(
-            query,
-            VisibleRegionUtils.toPolygon(mapView.mapWindow.map.visibleRegion),
-            SearchOptions(),
-            searchListenerFromTextToMapTo
-        )
-    }
-
-    private val searchListenerFromTextToMapFrom = object : Session.SearchListener {
-        override fun onSearchResponse(response: Response) {
-            for (searchResult in response.collection.children) {
-                val resultLocation = searchResult.obj!!.geometry[0].point
-                if (resultLocation != null) {
-                    if (startMarker != null) {
-                        removeStartMarker()
-                    }
-                    Toast.makeText(
-                        requireContext(),
-                        "Адрес где передать заказ курьеру установлен",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    startMarker = mapObjectCollection.addPlacemark(
-                        resultLocation,
-                        ImageProvider.fromBitmap(markerStart)
-                    )
-
-
-                }
-            }
-        }
-
-        override fun onSearchError(p0: Error) {
-            TODO("Not yet implemented")
-        }
-    }
-    private val searchListenerFromTextToMapTo = object : Session.SearchListener {
-        override fun onSearchResponse(response: Response) {
-            for (searchResult in response.collection.children) {
-                val resultLocation = searchResult.obj!!.geometry[0].point
-                if (resultLocation != null) {
-                    if (finishMarker != null) {
-                        removeFinishMarker()
-                    }
-                    Toast.makeText(
-                        requireContext(),
-                        "Адрес куда приедет заказ установлен",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    finishMarker = mapObjectCollection.addPlacemark(
-                        resultLocation,
-                        ImageProvider.fromBitmap(markerFinish)
-                    )
-                }
-            }
-        }
-
-        override fun onSearchError(p0: Error) {
-            TODO("Not yet implemented")
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -206,6 +122,70 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             }
         }
     }
+    private fun removeMarker(marker : PlacemarkMapObject) {
+        marker.let {
+            mapObjectCollection.remove(it)
+        }
+    }
+
+    private fun submitQueryFrom(query: String) {
+        searchSession = searchManager.submit(
+            query,
+            VisibleRegionUtils.toPolygon(mapView.mapWindow.map.visibleRegion),
+            SearchOptions(),
+            searchListenerFromTextToMapFrom
+        )
+    }
+
+    private fun submitQueryTo(query: String) {
+        searchSession = searchManager.submit(
+            query,
+            VisibleRegionUtils.toPolygon(mapView.mapWindow.map.visibleRegion),
+            SearchOptions(),
+            searchListenerFromTextToMapTo
+        )
+    }
+
+    private val searchListenerFromTextToMapFrom = object : Session.SearchListener {
+        override fun onSearchResponse(response: Response) {
+            for (searchResult in response.collection.children) {
+                val resultLocation = searchResult.obj!!.geometry[0].point
+                if (resultLocation != null) {
+                    if (startMarker != null) {
+                        removeMarker(startMarker!!)
+                    }
+                    startMarker = mapObjectCollection.addPlacemark(
+                        resultLocation,
+                        ImageProvider.fromBitmap(markerStart)
+                    )
+                }
+            }
+        }
+
+        override fun onSearchError(p0: Error) {
+            TODO("Not yet implemented")
+        }
+    }
+    private val searchListenerFromTextToMapTo = object : Session.SearchListener {
+        override fun onSearchResponse(response: Response) {
+            for (searchResult in response.collection.children) {
+                val resultLocation = searchResult.obj!!.geometry[0].point
+                if (resultLocation != null) {
+                    if (finishMarker != null) {
+                        removeMarker(finishMarker!!)
+                    }
+                    finishMarker = mapObjectCollection.addPlacemark(
+                        resultLocation,
+                        ImageProvider.fromBitmap(markerFinish)
+                    )
+                }
+            }
+        }
+
+        override fun onSearchError(p0: Error) {
+            TODO("Not yet implemented")
+        }
+    }
 
     //выделение домика
     private val tapListener = GeoObjectTapListener { geoObjectTapEvent ->
@@ -223,13 +203,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         override fun onMapTap(map: Map, point: Point) {
             searchSession = searchManager.submit(point, 20, SearchOptions(), searchListenerEtFrom)
             //отправлять поинт на бек дял измерения расстояния
-            Toast.makeText(
-                requireContext(),
-                "Адрес где передать заказ курьеру установлен",
-                Toast.LENGTH_SHORT
-            ).show()
+
             if (startMarker != null) {
-                removeStartMarker()
+                removeMarker(startMarker!!)
             }
             startMarker =
                 mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerStart))
@@ -239,46 +215,43 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         override fun onMapLongTap(map: Map, point: Point) {
             searchSession = searchManager.submit(point, 20, SearchOptions(), searchListenerEtTo)
 
-            Toast.makeText(
-                requireContext(),
-                "Адрес куда приедет заказ установлен",
-                Toast.LENGTH_SHORT
-            ).show()
             if (finishMarker != null) {
-                removeFinishMarker()
+                removeMarker(finishMarker!!)
             }
             finishMarker =
                 mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerFinish))
-            //отправлять поинт на бек дял измерения расстояния
+            //отправлять поинт на бек для измерения расстояния
 
         }
     }
+    private fun wow(response: Response, editText: EditText){
+        val addressComponents = response.collection.children.firstOrNull()?.obj
+            ?.metadataContainer
+            ?.getItem(ToponymObjectMetadata::class.java)
+            ?.address
+            ?.components
+        if (addressComponents != null) {
+            val city =
+                addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.LOCALITY) }?.name
+                    ?: "Город не найден"
+            val street =
+                addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.STREET) }?.name
+                    ?: "Улица не найдена"
+            val houseNumber =
+                addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.HOUSE) }?.name
+                    ?: "Номер дома не найден"
 
+            val addressText = "$city, $street, $houseNumber"
+            editText.setText(addressText)
+        } else {
+            Toast.makeText(requireContext(), "Адрес не найден", Toast.LENGTH_SHORT).show()
+        }
+
+    }
     //самая полезная вещь, показывает адрес в тосте
     private val searchListenerEtFrom = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
-            val addressComponents = response.collection.children.firstOrNull()?.obj
-                ?.metadataContainer
-                ?.getItem(ToponymObjectMetadata::class.java)
-                ?.address
-                ?.components
-
-            if (addressComponents != null) {
-                val city =
-                    addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.LOCALITY) }?.name
-                        ?: "Город не найден"
-                val street =
-                    addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.STREET) }?.name
-                        ?: "Улица не найдена"
-                val houseNumber =
-                    addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.HOUSE) }?.name
-                        ?: "Номер дома не найден"
-
-                val addressText = "$city, $street, $houseNumber"
-                viewBinding.etFrom.setText(addressText)
-            } else {
-                Toast.makeText(requireContext(), "Адрес не найден", Toast.LENGTH_SHORT).show()
-            }
+            wow(response,viewBinding.etFrom)
         }
 
         override fun onSearchError(p0: Error) {
@@ -287,27 +260,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
     }
     private val searchListenerEtTo = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
-            val addressComponents = response.collection.children.firstOrNull()?.obj
-                ?.metadataContainer
-                ?.getItem(ToponymObjectMetadata::class.java)
-                ?.address
-                ?.components
-            if (addressComponents != null) {
-                val city =
-                    addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.LOCALITY) }?.name
-                        ?: "Город не найден"
-                val street =
-                    addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.STREET) }?.name
-                        ?: "Улица не найдена"
-                val houseNumber =
-                    addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.HOUSE) }?.name
-                        ?: "Номер дома не найден"
-
-                val addressText = "$city, $street, $houseNumber"
-                viewBinding.etTo.setText(addressText)
-            } else {
-                Toast.makeText(requireContext(), "Адрес не найден", Toast.LENGTH_SHORT).show()
-            }
+            wow(response,viewBinding.etTo)
         }
 
         override fun onSearchError(p0: Error) {
