@@ -25,8 +25,8 @@ class ScannerActivity : AppCompatActivity(), ZBarScannerView.ResultHandler {
         zbView.stopCamera()
     }
 
-    override fun handleResult(result: Result?) {
-        Log.d("MyLog","Result:${result?.contents}")
+    override fun handleResult(result: Result) {
+        Log.d("MyLog",result.contents.toString())
         finish()
     }
 }

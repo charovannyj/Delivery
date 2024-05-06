@@ -20,9 +20,10 @@ import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentThirdBinding
 
 
 class ThirdFragment : Fragment() {
-
     private val viewBinding: FragmentThirdBinding by viewBinding(FragmentThirdBinding::bind)
 
+
+    val db = FirebaseFirestore.getInstance().document("fff/fre")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +31,6 @@ class ThirdFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_third, container, false)
     }
-    val db = FirebaseFirestore.getInstance().document("fff/fre")
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
