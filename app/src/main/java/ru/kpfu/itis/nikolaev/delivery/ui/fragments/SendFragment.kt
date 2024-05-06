@@ -186,7 +186,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             TODO("Not yet implemented")
         }
     }
-
     //выделение домика
     private val tapListener = GeoObjectTapListener { geoObjectTapEvent ->
         val selectionMetadata: GeoObjectSelectionMetadata = geoObjectTapEvent
