@@ -111,7 +111,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
                 val password = etPassword.text.toString()
 
 
-                val user = UserSignUpModel("role", name, surname, email, password)
+                val user = UserSignUpModel(role!!, name, surname, email, password)
                 viewModel.signUpWithEmailAndPassword(user)
 
             }

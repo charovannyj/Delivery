@@ -3,6 +3,7 @@ package ru.kpfu.itis.nikolaev.delivery
 import android.app.Application
 import com.google.firebase.Firebase
 import com.google.firebase.initialize
+import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.maps.mobile.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
