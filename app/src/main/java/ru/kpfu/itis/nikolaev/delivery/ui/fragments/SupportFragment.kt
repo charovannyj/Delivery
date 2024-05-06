@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSupportBinding
@@ -45,7 +46,8 @@ class SupportFragment : Fragment(R.layout.fragment_support) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CAMERA),12)
         }
         else{
-            startActivity(Intent(requireActivity(), ScannerActivity::class.java))
+            findNavController().navigate(R.id.scannerActivity)
+
         }
     }
     companion object {

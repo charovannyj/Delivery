@@ -68,7 +68,11 @@
         android:id="@+id/navigation_supportFragment"
         android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.SupportFragment"
         android:label="fragment_support"
-        tools:layout="@layout/fragment_support" />
+        tools:layout="@layout/fragment_support" >
+        <action
+            android:id="@+id/action_navigation_supportFragment_to_scannerActivity"
+            app:destination="@id/scannerActivity" />
+    </fragment>
     <fragment
         android:id="@+id/authFragment"
         android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.AuthFragment"
@@ -78,4 +82,8 @@
             android:id="@+id/action_authFragment_to_thirdFragment3"
             app:destination="@id/thirdFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/scannerActivity"
+        android:name="ru.kpfu.itis.nikolaev.delivery.ui.ScannerActivity"
+        android:label="ScannerActivity" />
 </navigation>

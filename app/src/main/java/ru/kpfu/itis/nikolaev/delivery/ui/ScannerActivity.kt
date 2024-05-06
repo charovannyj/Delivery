@@ -20,6 +20,7 @@ class ScannerActivity : Fragment(), ZBarScannerView.ResultHandler {
         super.onCreate(savedInstanceState)
         zbView = ZBarScannerView(requireContext())
         return zbView.rootView
+
     }
 
     override fun onResume() {
@@ -34,6 +35,7 @@ class ScannerActivity : Fragment(), ZBarScannerView.ResultHandler {
     }
 
     override fun handleResult(result: Result) {
-        Log.d("MyLog",result.contents.toString())
+        Log.d("MyLog",result.contents)
+        zbView.flash
     }
 }

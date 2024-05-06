@@ -39,7 +39,6 @@ class QrFragment : Fragment(R.layout.fragment_qr) {
                     image?.setImageBitmap(bitmap)
                 } catch (e: WriterException){}
             }
-            
         }
     }
 
