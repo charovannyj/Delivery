@@ -1,4 +1,4 @@
-package ru.kpfu.itis.nikolaev.delivery.ui.fragments
+package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -17,16 +18,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.nikolaev.delivery.R
-import ru.kpfu.itis.nikolaev.delivery.data.repository.UsersRepository
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentAuthBinding
-import ru.kpfu.itis.nikolaev.delivery.model.user.UserSignUpModel
+import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.AuthViewModel
 
 
 class AuthFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
 
     private val viewBinding : FragmentAuthBinding by viewBinding(FragmentAuthBinding::bind)
-
+    private val viewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +36,7 @@ class AuthFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.e("aaa", "fragment created")
         super.onViewCreated(view, savedInstanceState)
         Firebase.initialize(requireContext())
         auth = FirebaseAuth.getInstance()
@@ -71,5 +72,19 @@ class AuthFragment : Fragment() {
             }
         }
 
+    }
+    private fun observerData() {
+        with(viewModel) {
+
+            /** Использование Flow вместе с кастомным extension
+             * @see utils/Extensions
+             * @see BaseFragment
+             **/
+            /*currentUserFlow.observe { weatherData ->
+                weatherData?.let {
+                    viewBinding.currentTempTv.text = it.mainData.temperature.toString()
+                }
+            }*/
+        }
     }
 }

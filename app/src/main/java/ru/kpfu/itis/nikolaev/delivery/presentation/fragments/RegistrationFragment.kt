@@ -1,4 +1,4 @@
-package ru.kpfu.itis.nikolaev.delivery.ui.fragments
+package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.initialize
 
 import kotlinx.coroutines.Dispatchers

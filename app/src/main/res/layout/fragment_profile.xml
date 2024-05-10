@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/beige"
 
-    tools:context=".ui.fragments.ProfileFragment">
+    tools:context=".presentation.fragments.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

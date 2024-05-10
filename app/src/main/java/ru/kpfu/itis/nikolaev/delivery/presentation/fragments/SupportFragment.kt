@@ -1,10 +1,6 @@
-package ru.kpfu.itis.nikolaev.delivery.ui.fragments
+package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
-import android.app.Activity
-import android.content.Intent
-import android.content.Intent.getIntent
 import android.content.pm.PackageManager
-import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,12 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSupportBinding
-import ru.kpfu.itis.nikolaev.delivery.ui.ScannerActivity
 
 class SupportFragment : Fragment(R.layout.fragment_support) {
     private val viewBinding: FragmentSupportBinding by viewBinding(FragmentSupportBinding::bind)

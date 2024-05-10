@@ -1,4 +1,4 @@
-package ru.kpfu.itis.nikolaev.delivery.ui.fragments
+package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

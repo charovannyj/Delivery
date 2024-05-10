@@ -1,4 +1,4 @@
-package ru.kpfu.itis.nikolaev.delivery.ui
+package ru.kpfu.itis.nikolaev.delivery.presentation
 
 
 import android.os.Bundle
@@ -11,12 +11,12 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUiSaveStateControl
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
 import ru.kpfu.itis.nikolaev.delivery.Keys
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.ActivityMainBinding
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var navController : NavController
     private val viewBinding: ActivityMainBinding by viewBinding(ActivityMainBinding::bind)

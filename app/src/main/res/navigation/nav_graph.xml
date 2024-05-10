@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.WelcomeFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.WelcomeFragment"
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.RegistrationFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" >
 
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/thirdFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.ThirdFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.ThirdFragment"
         android:label="fragment_third"
         tools:layout="@layout/fragment_third" >
         <action
@@ -41,32 +41,32 @@
     </fragment>
     <fragment
         android:id="@+id/fastShippingFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.FastShippingFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.FastShippingFragment"
         android:label="fragment_fast_shipping"
         tools:layout="@layout/fragment_fast_shipping" />
     <fragment
         android:id="@+id/navigation_mainFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.MainFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/navigation_profileFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.ProfileFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/navigation_qrFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.QrFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.QrFragment"
         android:label="fragment_qr"
         tools:layout="@layout/fragment_qr" />
     <fragment
         android:id="@+id/navigation_sendFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.SendFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.SendFragment"
         android:label="fragment_send"
         tools:layout="@layout/fragment_send" />
     <fragment
         android:id="@+id/navigation_supportFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.SupportFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.SupportFragment"
         android:label="fragment_support"
         tools:layout="@layout/fragment_support" >
         <action
@@ -75,7 +75,7 @@
     </fragment>
     <fragment
         android:id="@+id/authFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.fragments.AuthFragment"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" >
         <action
@@ -84,6 +84,6 @@
     </fragment>
     <fragment
         android:id="@+id/scannerActivity"
-        android:name="ru.kpfu.itis.nikolaev.delivery.ui.ScannerActivity"
+        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.ScannerFragment"
         android:label="ScannerActivity" />
 </navigation>

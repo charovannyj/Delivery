@@ -1,11 +1,10 @@
-package ru.kpfu.itis.nikolaev.delivery.ui.fragments
+package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.zxing.BarcodeFormat

@@ -1,6 +1,5 @@
-package ru.kpfu.itis.nikolaev.delivery.ui
+package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +10,7 @@ import me.dm7.barcodescanner.zbar.Result
 import me.dm7.barcodescanner.zbar.ZBarScannerView
 import ru.kpfu.itis.nikolaev.delivery.R
 
-class ScannerActivity : Fragment(), ZBarScannerView.ResultHandler {
+class ScannerFragment : Fragment(), ZBarScannerView.ResultHandler {
     private lateinit var zbView: ZBarScannerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,7 +18,7 @@ class ScannerActivity : Fragment(), ZBarScannerView.ResultHandler {
     ): View? {
         super.onCreate(savedInstanceState)
         zbView = ZBarScannerView(requireContext())
-        return zbView.rootView
+        return inflater.inflate(R.layout.fragment_scanner, container, false)
 
     }
 

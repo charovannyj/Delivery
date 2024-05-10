@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/beige"
 
-    tools:context=".ui.fragments.SendFragment">
+    tools:context=".presentation.fragments.SendFragment">
 
     <RadioGroup
         android:id="@+id/rb_group"

@@ -1,31 +1,36 @@
-package ru.kpfu.itis.nikolaev.delivery.ui.fragments
-
+package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import ru.kpfu.itis.nikolaev.delivery.Keys
 import ru.kpfu.itis.nikolaev.delivery.R
-import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentFastShippingBinding
+import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentMainBinding
 
 
-class FastShippingFragment : Fragment() {
-    private val viewBinding : FragmentFastShippingBinding by viewBinding(FragmentFastShippingBinding::bind)
+class MainFragment : Fragment() {
+
+    private val viewBinding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_fast_shipping, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Keys.authorized = true
         with(viewBinding){
 
         }
     }
+
 
 }
