@@ -1,7 +1,7 @@
 package ru.kpfu.itis.nikolaev.delivery.data.repository
 
 import ru.kpfu.itis.nikolaev.delivery.di.ServiceLocator
-import ru.kpfu.itis.nikolaev.delivery.model.user.UserSignUpModel
+import ru.kpfu.itis.nikolaev.delivery.domain.model.UserSignUpModel
 
 object UsersRepository {
 

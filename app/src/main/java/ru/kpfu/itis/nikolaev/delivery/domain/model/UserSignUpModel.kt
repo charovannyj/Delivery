@@ -1,4 +1,4 @@
-package ru.kpfu.itis.nikolaev.delivery.model.user
+package ru.kpfu.itis.nikolaev.delivery.domain.model
 
 data class UserSignUpModel(
     val role : String,

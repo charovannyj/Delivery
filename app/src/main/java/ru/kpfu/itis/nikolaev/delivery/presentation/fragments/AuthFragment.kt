@@ -1,7 +1,6 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.initialize
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentAuthBinding
-import ru.kpfu.itis.nikolaev.delivery.model.user.UserSignInModel
+import ru.kpfu.itis.nikolaev.delivery.domain.model.UserSignInModel
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.AuthViewModel
 
 
@@ -40,7 +34,6 @@ class AuthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = FirebaseAuth.getInstance()
-        observerData()
         with(viewBinding) {
             btnEnter.setOnClickListener {
                 val email = etEmail.text.toString()
@@ -49,12 +42,13 @@ class AuthFragment : Fragment() {
                 viewModel.signInWithEmailAndPassword(user)
             }
         }
+        observerData()
+
 
     }
 
     private fun observerData() {
         with(viewModel) {
-
             lifecycleScope.launch {
                 currentUserFlow.collect { authResult ->
                     authResult?.let {
