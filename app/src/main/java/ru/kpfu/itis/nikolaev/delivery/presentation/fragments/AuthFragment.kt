@@ -13,19 +13,21 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.initialize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentAuthBinding
+import ru.kpfu.itis.nikolaev.delivery.model.user.UserSignInModel
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.AuthViewModel
 
 
 class AuthFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
 
-    private val viewBinding : FragmentAuthBinding by viewBinding(FragmentAuthBinding::bind)
+    private val viewBinding: FragmentAuthBinding by viewBinding(FragmentAuthBinding::bind)
     private val viewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,55 +38,35 @@ class AuthFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e("aaa", "fragment created")
         super.onViewCreated(view, savedInstanceState)
-        Firebase.initialize(requireContext())
         auth = FirebaseAuth.getInstance()
-        with(viewBinding){
-
+        observerData()
+        with(viewBinding) {
             btnEnter.setOnClickListener {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener{ task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Authentication yes.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                            lifecycleScope.launch(Dispatchers.IO) {
-                                withContext(Dispatchers.Main) {
-                                    findNavController().navigate(R.id.thirdFragment)
-                                }
-                            }
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(
-                                requireContext(),
-                                "Authentication failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                        }
-                    }
-
-
+                val user = UserSignInModel(email, password)
+                viewModel.signInWithEmailAndPassword(user)
             }
         }
 
     }
+
     private fun observerData() {
         with(viewModel) {
 
-            /** Использование Flow вместе с кастомным extension
-             * @see utils/Extensions
-             * @see BaseFragment
-             **/
-            /*currentUserFlow.observe { weatherData ->
-                weatherData?.let {
-                    viewBinding.currentTempTv.text = it.mainData.temperature.toString()
+            lifecycleScope.launch {
+                currentUserFlow.collect { authResult ->
+                    authResult?.let {
+                        if (it) {
+                            findNavController().navigate(R.id.thirdFragment)
+                            Toast.makeText(requireContext(), "Auth yes", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(requireContext(), "Auth no", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
-            }*/
+            }
         }
     }
 }

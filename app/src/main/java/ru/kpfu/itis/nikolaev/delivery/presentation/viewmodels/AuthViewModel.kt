@@ -1,28 +1,41 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import ru.kpfu.itis.nikolaev.delivery.R
+import ru.kpfu.itis.nikolaev.delivery.model.user.UserSignInModel
+import ru.kpfu.itis.nikolaev.delivery.model.user.usecase.SignInUseCase
 
-class AuthViewModel: ViewModel() {
+class AuthViewModel : ViewModel() {
 
-    private val _currentUserFlow = MutableStateFlow<FirebaseUser?>(null)
-    val currentUserFlow: StateFlow<FirebaseUser?> = _currentUserFlow.asStateFlow()
+    private var _currentUserFlow = MutableSharedFlow<Boolean>(1)
+    val currentUserFlow: SharedFlow<Boolean?>
+        get() = _currentUserFlow
 
-    fun signInWithEmailAndPassword(email: String, password: String) {
+    fun signInWithEmailAndPassword(user: UserSignInModel) {
         viewModelScope.launch {
             try {
-                val user = FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).await().user
-                _currentUserFlow.emit(user)
+                val result = SignInUseCase(Dispatchers.IO).invoke(user)
+                _currentUserFlow.emit(result)
+
             } catch (e: Exception) {
-                // Handle exceptions (e.g., emit an error state or log the error)
-                _currentUserFlow.emit(null)
+                Log.e("TAG_error", "error")
             }
         }
     }

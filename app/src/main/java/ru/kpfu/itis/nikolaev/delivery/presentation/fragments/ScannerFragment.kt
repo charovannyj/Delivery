@@ -18,7 +18,7 @@ class ScannerFragment : Fragment(), ZBarScannerView.ResultHandler {
     ): View? {
         super.onCreate(savedInstanceState)
         zbView = ZBarScannerView(requireContext())
-        return inflater.inflate(R.layout.fragment_scanner, container, false)
+        return zbView.rootView
 
     }
 
