@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/beige"
-
+    android:paddingTop="28dp"
     tools:context=".presentation.fragments.SendFragment">
 
-    <RadioGroup
+    <!--<RadioGroup
         android:id="@+id/rb_group"
         android:layout_marginVertical="20dp"
         android:layout_marginHorizontal="16dp"
@@ -49,7 +49,7 @@
 
             />
     </RadioGroup>
-
+-->
 
     <com.google.android.material.textfield.TextInputLayout
 
@@ -60,9 +60,7 @@
         android:layout_marginHorizontal="20dp"
 
         android:hint="@string/from"
-
         android:background="@drawable/input_til_drawable"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:startIconDrawable="@drawable/baseline_person_24"
         app:endIconMode="clear_text"
         >
@@ -90,7 +88,6 @@
         android:hint="@string/to"
 
         android:background="@drawable/input_til_drawable"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:startIconDrawable="@drawable/baseline_person_24"
         app:endIconMode="clear_text"
         >
@@ -118,7 +115,6 @@
         android:hint="@string/thing_cost"
 
         android:background="@drawable/input_til_drawable"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:startIconDrawable="@drawable/baseline_person_24"
         app:endIconMode="clear_text"
         >
@@ -143,7 +139,6 @@
         android:hint="@string/dimensions"
 
         android:background="@drawable/input_til_drawable"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:startIconDrawable="@drawable/baseline_person_24"
         app:endIconMode="clear_text"
         >
@@ -168,7 +163,6 @@
         android:hint="@string/id_recipient"
 
         android:background="@drawable/input_til_drawable"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:startIconDrawable="@drawable/baseline_person_24"
         app:endIconMode="clear_text"
         >
@@ -182,9 +176,36 @@
             android:background="@android:color/transparent"
             android:textColor="@color/black"            />
     </com.google.android.material.textfield.TextInputLayout>
-    <com.yandex.mapkit.mapview.MapView
-        android:id="@+id/mapview"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_weight="1"
+            android:elevation="0dp"
+            app:cardCornerRadius="33dp">
+
+            <com.yandex.mapkit.mapview.MapView
+                android:id="@+id/mapview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="@drawable/input_til_drawable" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:text="@string/send_enter"
+            android:textColor="@color/black"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/dark_beige_drawable"
+
+            />
+    </FrameLayout>
 
 </LinearLayout>

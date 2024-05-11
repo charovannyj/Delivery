@@ -6,4 +6,11 @@
     <style name="RadioButtonTextStyleSelected">
         <item name="android:textSize">40sp</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/dark_beige</item>
+        <item name="colorPrimaryDark">@color/dark_beige</item>
+        <item name="colorAccent">@color/dark_beige</item>
+    </style>
 </resources>

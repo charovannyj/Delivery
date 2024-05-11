@@ -21,9 +21,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Delivery"
+        android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+
+
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -31,11 +33,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".presentation.fragments.ScannerFragment"
-            android:exported="true">
-
         </activity>
 
     </application>

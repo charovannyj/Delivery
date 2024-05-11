@@ -1,6 +1,7 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,8 @@ class AuthFragment : Fragment() {
                 val password = etPassword.text.toString()
                 val user = UserSignInModel(email, password)
                 viewModel.signInWithEmailAndPassword(user)
+                Log.e("TAG", FirebaseAuth.getInstance().currentUser?.uid.toString())
+
             }
         }
         observerData()
