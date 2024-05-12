@@ -11,6 +11,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import ru.kpfu.itis.nikolaev.delivery.R
+import ru.kpfu.itis.nikolaev.delivery.data.repository.OrdersRepositoryImpl
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentThirdBinding
 
 
@@ -36,6 +37,7 @@ class ThirdFragment : Fragment() {
 
         Log.e("TAG", FirebaseFirestore.getInstance().app.name)
         //fetchData()
+        //¯\_(ツ)_/¯
 // Add a new document with a generated ID
 
 // Add a new document with a generated ID
@@ -48,6 +50,8 @@ class ThirdFragment : Fragment() {
                 findNavController().navigate(R.id.fastShippingFragment)
             }
             btnEnterInApp.setOnClickListener{
+                OrdersRepositoryImpl().getOrdersGet()
+
                 findNavController().navigate(R.id.navigation_mainFragment)
             }
         }
