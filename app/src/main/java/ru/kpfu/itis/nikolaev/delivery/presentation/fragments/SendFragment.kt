@@ -16,7 +16,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -37,9 +40,13 @@ import com.yandex.mapkit.search.ToponymObjectMetadata
 import com.yandex.runtime.Error
 
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import ru.kpfu.itis.nikolaev.delivery.R
+import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSendBinding
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.SendViewModel
+import java.util.Date
 
 
 class SendFragment : Fragment(R.layout.fragment_send) {
@@ -82,6 +89,17 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         observerData()
 
         with(viewBinding) {
+            btnSend.setOnClickListener{
+                val addressFrom = etFrom.text.toString()
+                val addressTo = etTo.text.toString()
+                val price = etPrice.text.toString().toInt()
+                val dimensions = etDimensions.text.toString()
+                val uidSender = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                val uidRecipient = etRecipient.text.toString()
+                val date = Date()
+                val order = OrderModel(addressFrom,addressTo,price,dimensions,uidSender, uidRecipient,date)
+                viewModel.sendOrder(order)
+            }
             mapView = mapview
             markerStart = createBitmapFromVector(R.drawable.location_map_pin_mark_icon_148684)!!
             markerFinish = createBitmapFromVector(R.drawable.finish_er83q5mw52un)!!
@@ -296,6 +314,14 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             resultLocation,
                             ImageProvider.fromBitmap(markerFinish)
                         )
+                    }
+                }
+            }
+            lifecycleScope.launch {
+
+                sendOrderFlow.collect { result ->
+                    result?.let {
+                        Toast.makeText(requireContext(), "заказ отправлен", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

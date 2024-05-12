@@ -118,6 +118,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
             observerData()
         }
     }
+
     private fun observerData() {
         with(viewModel) {
             lifecycleScope.launch {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentThirdBinding
@@ -16,8 +17,11 @@ import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentThirdBinding
 class ThirdFragment : Fragment() {
     private val viewBinding: FragmentThirdBinding by viewBinding(FragmentThirdBinding::bind)
 
+    val dbInstance =  FirebaseFirestore.getInstance()
+    val dbOffersGet = dbInstance.document("clients/${FirebaseAuth.getInstance().currentUser?.uid.toString()}/offers/get")
+    val dbOffersSend = dbInstance.document("clients/${FirebaseAuth.getInstance().currentUser?.uid.toString()}/offers/send")
+    val dbProfile = dbInstance.document("clients/${FirebaseAuth.getInstance().currentUser?.uid.toString()}")
 
-    val db = FirebaseFirestore.getInstance().document("fff/fre")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +41,7 @@ class ThirdFragment : Fragment() {
 // Add a new document with a generated ID
 
 
-        fetchData()
+        //saveData()
 
         with(viewBinding){
             btnFastShipping.setOnClickListener{
@@ -49,11 +53,9 @@ class ThirdFragment : Fragment() {
         }
 
     }
-    private fun saveData(){
+    /*private fun saveUser(){
         val user: MutableMap<String, Any> = HashMap()
-        user["first"] = "Ada"
-        user["last"] = "Lovelace"
-        user["born"] = 1815
+        user["first"] = "wwowoowwoowow"
         db.set(user)
             .addOnSuccessListener { documentReference ->
                 Log.d(
@@ -74,6 +76,6 @@ class ThirdFragment : Fragment() {
                     Log.e("TAG", "Error getting documents.")
                 }
             }
-    }
+    }*/
 
 }

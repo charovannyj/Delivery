@@ -1,5 +1,6 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels
 
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
@@ -21,17 +22,21 @@ import com.yandex.mapkit.search.Session
 import com.yandex.mapkit.search.ToponymObjectMetadata
 import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
+import ru.kpfu.itis.nikolaev.delivery.domain.usecase.SendOrderUseCase
+import ru.kpfu.itis.nikolaev.delivery.domain.usecase.SignUpUseCase
 
 class SendViewModel : ViewModel() {
 
-    private var _currentFromFlow = MutableStateFlow<FirebaseUser?>(null)
-    val currentFromFlow: StateFlow<FirebaseUser?>
-        get() = _currentFromFlow
+    private var _sendOrderFlow = MutableStateFlow(false)
+    val sendOrderFlow: StateFlow<Boolean?>
+        get() = _sendOrderFlow
 
     private val searchManager = SearchFactory.getInstance()
         .createSearchManager(SearchManagerType.ONLINE) //важная вещь
@@ -46,6 +51,16 @@ class SendViewModel : ViewModel() {
         )
     }
 
+    fun sendOrder(orderModel: OrderModel){
+        viewModelScope.launch {
+            try {
+                val result = SendOrderUseCase(Dispatchers.IO).invoke(orderModel)
+                _sendOrderFlow.emit(result)
+            } catch (e: Exception) {
+                Log.e("TAG_error", "error")
+            }
+        }
+    }
     fun onMapTap(point: Point, onResponse: (Response) -> Unit) {
         searchSession =
             searchManager.submit(point, 20, SearchOptions(), object : Session.SearchListener {
