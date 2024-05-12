@@ -60,10 +60,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_my_orders"
         android:gravity="center"
+        android:background="@drawable/rounded_group_button_background"
+
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/rb_courier"
+            android:id="@+id/rb_get"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -71,6 +73,7 @@
             android:button="@android:color/transparent"
             android:gravity="center"
             android:text="мне"
+            android:checked="true"
             android:textAppearance="@drawable/rb_text_appearance"
             android:textColor="@drawable/radio_text_color"
             android:textSize="16dp"
@@ -78,7 +81,7 @@
             />
 
         <RadioButton
-            android:id="@+id/rb_client"
+            android:id="@+id/rb_send"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"

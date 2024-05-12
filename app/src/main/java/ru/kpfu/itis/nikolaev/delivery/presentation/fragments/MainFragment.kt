@@ -1,5 +1,6 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,10 +14,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.nikolaev.delivery.Keys
 import ru.kpfu.itis.nikolaev.delivery.R
+import ru.kpfu.itis.nikolaev.delivery.data.dao.Dao
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
+import ru.kpfu.itis.nikolaev.delivery.data.repository.RoomOrdersRepository
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentMainBinding
 import ru.kpfu.itis.nikolaev.delivery.presentation.adapters.CustomAdapter
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.AuthViewModel
@@ -44,11 +48,27 @@ class MainFragment : Fragment() {
         Keys.authorized = true
         observerData()
         with(viewBinding){
-            viewModel.getOrders()
+            rbGet.setOnClickListener {
+                customAdapter?.updateOrders(
+                    ordersGet!!.map { it.addressTo }.toTypedArray(), // addressTo
+                    ordersGet!!.map { it.date.toString() }.toTypedArray(), // dateSet - конвертируйте даты в строки
+                    ordersGet!!.map {  "status"  }.toTypedArray(), // statusSet - замените "status" на фактический статус
+                )
+
+                customAdapter?.notifyDataSetChanged()
+            }
+            rbSend.setOnClickListener{
+                customAdapter?.updateOrders(
+                    ordersSend!!.map { it.addressTo }.toTypedArray(), // addressTo
+                    ordersSend!!.map { it.date.toString() }.toTypedArray(), // dateSet - конвертируйте даты в строки
+                    ordersSend!!.map {  "status"  }.toTypedArray(), // statusSet - замените "status" на фактический статус
+                )
+
+                customAdapter?.notifyDataSetChanged()
+            }
             val statusSet = arrayOf("null")
             val dateSet = arrayOf("null")
             var addressTo1 = arrayOf("null")
-            //Thread.sleep(10000)
             customAdapter = CustomAdapter(statusSet,dateSet,addressTo1)
             val recyclerView: RecyclerView = recyclerView
             recyclerView.adapter = customAdapter
@@ -56,35 +76,37 @@ class MainFragment : Fragment() {
 
         }
     }
+    init {
+        viewModel.getOrders()
+    }
+    @SuppressLint("NotifyDataSetChanged")
     private fun observerData() {
         with(viewModel) {
             lifecycleScope.launch {
                 //поменять на другой флоу
                 ordersGetFlow.collect { orders ->
                     orders?.let {
+                        /*for (order in orders){
+                            RoomOrdersRepository.insertData(order)
+                        }*/
                         ordersGet = orders
-                        customAdapter?.updateOrders(
-                            orders.map { it.addressTo }.toTypedArray(), // addressTo
-                            orders.map { it.date.toString() }.toTypedArray(), // dateSet - конвертируйте даты в строки
-                            orders.map {  "status"  }.toTypedArray(), // statusSet - замените "status" на фактический статус
-                        )
-
-                        // Уведомляем адаптер об изменении данных
-                        customAdapter?.notifyDataSetChanged()
-                        Log.e("Tag", ordersGet.toString())
                     }
                 }
 
             }
-            /*lifecycleScope.launch {
+            lifecycleScope.launch {
                 ordersSendFlow.collect { orders ->
                     orders?.let {
+                        /*for (order in orders){
+                            RoomOrdersRepository.insertData(order)
+                        }
+                        ordersGet = RoomOrdersRepository.fetchData()*/
                         ordersSend = orders
 
                     }
                 }
 
-            }*/
+            }
         }
 
     }
