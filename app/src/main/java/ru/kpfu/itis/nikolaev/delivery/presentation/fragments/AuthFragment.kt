@@ -56,7 +56,7 @@ class AuthFragment : Fragment() {
                 currentUserFlow.collect { authResult ->
                     authResult?.let {
                         if (it) {
-                            findNavController().navigate(R.id.thirdFragment)
+                            findNavController().navigate(R.id.navigation_qrFragment)
                             Toast.makeText(requireContext(), "Auth yes", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(requireContext(), "Auth no", Toast.LENGTH_SHORT).show()
