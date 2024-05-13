@@ -1,10 +1,10 @@
 package ru.kpfu.itis.nikolaev.delivery.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import ru.kpfu.itis.nikolaev.delivery.data.entities.OrderEntity
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
 import ru.kpfu.itis.nikolaev.delivery.di.ServiceLocator
 import ru.kpfu.itis.nikolaev.delivery.domain.model.UserSignUpModel
+/*
 
 object RoomOrdersRepository {
 
@@ -19,4 +19,4 @@ object RoomOrdersRepository {
         return ServiceLocator.database.dao.getAllOrders( )
     }
 
-}
+}*/

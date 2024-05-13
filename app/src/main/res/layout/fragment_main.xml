@@ -73,7 +73,6 @@
             android:button="@android:color/transparent"
             android:gravity="center"
             android:text="мне"
-            android:checked="true"
             android:textAppearance="@drawable/rb_text_appearance"
             android:textColor="@drawable/radio_text_color"
             android:textSize="16dp"
@@ -95,7 +94,26 @@
 
             />
     </RadioGroup>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/parentShimmerLayout"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

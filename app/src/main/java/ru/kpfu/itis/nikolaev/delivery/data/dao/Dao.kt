@@ -3,7 +3,6 @@ package ru.kpfu.itis.nikolaev.delivery.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import ru.kpfu.itis.nikolaev.delivery.data.entities.OrderEntity
 import ru.kpfu.itis.nikolaev.delivery.data.entities.UserEntity
 import java.util.Date
 
@@ -17,7 +16,7 @@ interface Dao {
 
     @Query("select * from users")
     fun getAllUsers(): Flow<List<UserEntity>>
-    @Query(
+/*    @Query(
         "INSERT INTO orders (address_from, address_to, price, dimensions, uid_sender, uid_recipient, date) " +
                 "VALUES (:addressFrom, :addressTo, :price, :dimensions, :uidSender, :uidRecipient, :date)"
     )
@@ -31,5 +30,5 @@ interface Dao {
     )
 
     @Query("select * from orders")
-    fun getAllOrders(): Flow<List<OrderEntity>>
+    fun getAllOrders(): Flow<List<OrderEntity>>*/
 }

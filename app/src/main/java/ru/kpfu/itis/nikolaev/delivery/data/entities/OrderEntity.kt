@@ -3,8 +3,9 @@ package ru.kpfu.itis.nikolaev.delivery.data.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
+import com.google.type.Date
 
+/*
 @Entity(
     tableName = "orders",
 )
@@ -22,4 +23,4 @@ data class OrderEntity(
     @ColumnInfo(name = "uid_recipient")
     val uidRecipient: String,
     val date: Date
-)
+)*/
