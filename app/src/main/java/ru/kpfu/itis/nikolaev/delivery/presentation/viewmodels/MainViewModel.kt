@@ -31,12 +31,12 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 Log.e("TAAAAAAAAG", "1")
-                val resultGets = OrdersRepositoryImpl().getOrders(uid, "send")
+                val resultGets =  GetOrderUseCase(Dispatchers.IO).invoke(uid, "get")
                 Log.e("TAAAAAAAAG", "2")
-                //val resultSends = GetOrderUseCase(Dispatchers.IO).invoke(uid, "send")
+                val resultSends = GetOrderUseCase(Dispatchers.IO).invoke(uid, "send")
                 Log.e("TAAAAAAAAG", resultGets.toString())
                 _ordersGetFlow.emit(resultGets)
-                    //_ordersSendFlow.emit(resultSends)
+                _ordersSendFlow.emit(resultSends)
             } catch (e: Exception) {
                 Log.e("TAG_error", "error")
             }

@@ -60,10 +60,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_my_orders"
         android:gravity="center"
+        android:background="@drawable/rounded_group_button_background"
+
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/rb_courier"
+            android:id="@+id/rb_get"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -78,7 +80,7 @@
             />
 
         <RadioButton
-            android:id="@+id/rb_client"
+            android:id="@+id/rb_send"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -92,7 +94,26 @@
 
             />
     </RadioGroup>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/parentShimmerLayout"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
