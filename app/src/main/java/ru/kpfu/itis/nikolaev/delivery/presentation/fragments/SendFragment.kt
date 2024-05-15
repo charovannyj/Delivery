@@ -139,7 +139,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 val uidSender = FirebaseAuth.getInstance().currentUser?.uid.toString()
                 val uidRecipient = etRecipient.text.toString()
                 val date = Calendar.getInstance()
-                val status = "у покупателя"
+                val status = getString(R.string.order_status_from_the_sender)
                 val order = OrderModel(addressFrom,addressTo,price,dimensions,uidSender, uidRecipient,date, status)
                 Log.e("TAAAg", "товар отправляется")
                 viewModel.sendOrder(order)

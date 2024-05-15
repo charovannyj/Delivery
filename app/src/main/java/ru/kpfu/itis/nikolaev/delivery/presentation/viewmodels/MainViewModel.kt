@@ -30,13 +30,8 @@ class MainViewModel : ViewModel() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
         viewModelScope.launch {
             try {
-                Log.e("TAAAAAAAAG", "get запрос послан 1")
-                Log.e("TAAAAAAAAG", uid)
-
                 val resultGets =  GetOrderUseCase(Dispatchers.IO).invoke(uid, "get")
-                Log.e("TAAAAAAAAG", "get запрос послан 2")
                 val resultSends = GetOrderUseCase(Dispatchers.IO).invoke(uid, "send")
-                Log.e("TAAAAAAAAG", resultGets.toString())
                 _ordersGetFlow.emit(resultGets)
                 _ordersSendFlow.emit(resultSends)
             } catch (e: Exception) {

@@ -17,23 +17,14 @@ class OrdersRepositoryImpl : OrdersRepository {
         try {
             val result = dbInstance.document("clients/${uid}").collection(orderType).get().await()
             for (it in result) {
-                Log.e("TAAAAAAAAG", "мы в OrdersRepositoryImpl")
-
                 val addressFrom = it.get("addressFrom") ?: ""
-                Log.e("TAAAAAAAAG", "address ${addressFrom}")
                 val addressTo = it.get("addressTo") ?: ""
                 val date = it.get("date") ?: "" //  Если date null, то используем текущую дату
-                Log.e("TAAAAAAAAG", "date ${date}")
-
-
                 val dimensions = it.get("dimensions") ?: ""
-                Log.e("TAAAAAAAAG", "dimensions ${dimensions}")
-
                 val price = it.getLong("price") ?: 0
                 val uidRecipient = it.get("uidRecipient") ?: ""
                 val uidSender = it.get("uidSender") ?: ""
                 val status = it.get("status") ?: ""
-                Log.e("it", it.toString())
                 val order = OrderModel(
                     addressFrom.toString(),
                     addressTo.toString(),

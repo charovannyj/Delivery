@@ -35,4 +35,8 @@
     <string name="change">изменить</string>
     <string name="save_changings">сохранить изменения</string>
     <string name="qr_code">qr-код</string>
+    <string name="order_status_from_the_sender">у отправителя</string>
+    <string name="order_status_from_the_recipient">у получателя</string>
+    <string name="order_status_at_the_courier">у курьера</string>
+
 </resources>

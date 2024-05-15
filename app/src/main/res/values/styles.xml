@@ -13,4 +13,10 @@
         <item name="colorPrimaryDark">@color/dark_beige</item>
         <item name="colorAccent">@color/dark_beige</item>
     </style>
+    <style name="BlurryDialog" parent="android:style/Theme.Dialog">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.8</item> <!-- Уровень размытия (0.0 - 1.0) -->
+    </style>
+
+
 </resources>
