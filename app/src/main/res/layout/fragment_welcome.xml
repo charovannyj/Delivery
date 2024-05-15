@@ -32,7 +32,7 @@
         android:fontFamily="sans-serif-light"
         android:text="@string/welcome2"
         android:textColor="@color/black"
-        android:textSize="52sp"
+        android:textSize="20sp"
          />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_registration"

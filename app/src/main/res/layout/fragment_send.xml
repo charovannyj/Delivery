@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            android:layout_marginStart="@dimen/margin_for_et"
+            android:layout_marginHorizontal="@dimen/margin_for_et"
             android:background="@android:color/transparent"
             android:textColor="@color/black"
             />
@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            android:layout_marginStart="@dimen/margin_for_et"
+            android:layout_marginHorizontal="@dimen/margin_for_et"
             android:background="@android:color/transparent"
             android:textColor="@color/black"
             />
@@ -124,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            android:layout_marginStart="@dimen/margin_for_et"
+            android:layout_marginHorizontal="@dimen/margin_for_et"
             android:background="@android:color/transparent"
             android:textColor="@color/black"            />
     </com.google.android.material.textfield.TextInputLayout>
@@ -148,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            android:layout_marginStart="@dimen/margin_for_et"
+            android:layout_marginHorizontal="@dimen/margin_for_et"
             android:background="@android:color/transparent"
             android:textColor="@color/black"            />
     </com.google.android.material.textfield.TextInputLayout>
@@ -172,7 +172,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            android:layout_marginStart="@dimen/margin_for_et"
+            android:layout_marginHorizontal="@dimen/margin_for_et"
             android:background="@android:color/transparent"
             android:textColor="@color/black"            />
     </com.google.android.material.textfield.TextInputLayout>

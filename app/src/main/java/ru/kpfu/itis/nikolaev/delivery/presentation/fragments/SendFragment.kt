@@ -89,17 +89,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         observerData()
 
         with(viewBinding) {
-            btnSend.setOnClickListener{
-                val addressFrom = etFrom.text.toString()
-                val addressTo = etTo.text.toString()
-                val price = etPrice.text.toString().toInt()
-                val dimensions = etDimensions.text.toString()
-                val uidSender = FirebaseAuth.getInstance().currentUser?.uid.toString()
-                val uidRecipient = etRecipient.text.toString()
-                val date = Date()
-                val order = OrderModel(addressFrom,addressTo,price,dimensions,uidSender, uidRecipient,date)
-                viewModel.sendOrder(order)
-            }
+
             mapView = mapview
             markerStart = createBitmapFromVector(R.drawable.location_map_pin_mark_icon_148684)!!
             markerFinish = createBitmapFromVector(R.drawable.finish_er83q5mw52un)!!
@@ -117,8 +107,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             val locationMapkit =
                 mapKit.createUserLocationLayer(mapview.mapWindow) //вроде как геолокация пользоавтеля в реальном времени
             locationMapkit.isVisible = true
-
-
 
             mapview.mapWindow.map.addInputListener(touchListener) // Добавляем слушатель тапов по карте с извлечением информации
 
@@ -140,6 +128,17 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                     )
                 }
                 false
+            }
+            btnSend.setOnClickListener{
+                val addressFrom = etFrom.text.toString()
+                val addressTo = etTo.text.toString()
+                val price = etPrice.text.toString().toInt()
+                val dimensions = etDimensions.text.toString()
+                val uidSender = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                val uidRecipient = etRecipient.text.toString()
+                val date = Date()
+                val order = OrderModel(addressFrom,addressTo,price,dimensions,uidSender, uidRecipient,date)
+                viewModel.sendOrder(order)
             }
         }
     }

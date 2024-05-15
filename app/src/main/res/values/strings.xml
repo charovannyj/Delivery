@@ -18,19 +18,20 @@
     <string name="from">откуда</string>
     <string name="to">куда</string>
     <string name="delivery_cost">стоимость доставки</string>
-    <string name="dimensions">габариты</string>
+    <string name="dimensions">объем посылки(см^3)</string>
     <string name="send">отправить</string>
     <string name="main">главная</string>
     <string name="enter_your_order_number">введи номер заказа</string>
     <string name="track_order">отследить заказ</string>
     <string name="my_orders">мои заказы</string>
-    <string name="thing_cost">стоимость товара</string>
+    <string name="thing_cost">стоимость товара(в рублях)</string>
     <string name="result_sum">итоговая стоимость: Х рублей</string>
     <string name="courier">курьер</string>
     <string name="pick_up_point">пункт выдачи</string>
-    <string name="id_recipient">id получателя</string>
+    <string name="id_recipient">id получателя(см.профиль)</string>
     <string name="success_payment">success_payment</string>
     <string name="registration">Регистрация</string>
     <string name="send_enter">отправить</string>
     <string name="change">изменить</string>
+    <string name="save_changings">сохранить изменения</string>
 </resources>
