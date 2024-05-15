@@ -30,15 +30,17 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.getOrders()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observerData()
         with(viewBinding) {
-            viewModel.getOrders()
+
 
             // Инициализируем адаптер с пустыми данными
             customAdapter = CustomAdapter(arrayOf(), arrayOf(), arrayOf())
@@ -48,9 +50,9 @@ class MainFragment : Fragment() {
             rbGet.setOnClickListener {
                 recyclerView.visibility = View.VISIBLE
                 customAdapter?.updateOrders(
-                    ordersGet!!.map { it.addressTo }.toTypedArray(), // addressTo
-                    ordersGet!!.map { it.date.toString() }.toTypedArray(), // dateSet - конвертируйте даты в строки
-                    ordersGet!!.map {  "status"  }.toTypedArray(), // statusSet - замените "status" на фактический статус
+                    ordersGet!!.map {  "в пути"  }.toTypedArray(),
+                    ordersGet!!.map { it.date.toString() }.toTypedArray(),
+                    ordersGet!!.map { it.addressTo }.toTypedArray(),
                 )
                 customAdapter?.notifyDataSetChanged()
             }
@@ -58,9 +60,9 @@ class MainFragment : Fragment() {
             rbSend.setOnClickListener {
                 recyclerView.visibility = View.VISIBLE
                 customAdapter?.updateOrders(
-                    ordersSend!!.map { it.addressTo }.toTypedArray(), // addressTo
-                    ordersSend!!.map { it.date.toString() }.toTypedArray(), // dateSet - конвертируйте даты в строки
-                    ordersSend!!.map {  "status"  }.toTypedArray(), // statusSet - замените "status" на фактический статус
+                    ordersSend!!.map {  "status"  }.toTypedArray(),
+                    ordersSend!!.map { it.date.toString() }.toTypedArray(),
+                    ordersSend!!.map { it.addressTo }.toTypedArray(),
 
                 )
                 customAdapter?.notifyDataSetChanged()
@@ -77,11 +79,11 @@ class MainFragment : Fragment() {
                     // Обновляем адаптер при получении новых данных
                     if (viewBinding.rbGet.isChecked) { // Обновляем, только если rbGet выбран
                         customAdapter?.updateOrders(
-                            ordersGet!!.map { it.addressTo }.toTypedArray(), // addressTo
-                            ordersGet!!.map { it.date.toString() }
-                                .toTypedArray(), // dateSet - конвертируйте даты в строки
                             ordersGet!!.map { "status" }
                                 .toTypedArray(), // statusSet - замените "status" на фактический статус
+                            ordersGet!!.map { it.date.toString() }
+                                .toTypedArray(), // dateSet - конвертируйте даты в строки
+                            ordersGet!!.map { it.addressTo }.toTypedArray(), // addressTo
                         )
                         customAdapter?.notifyDataSetChanged()
                     }
@@ -93,11 +95,11 @@ class MainFragment : Fragment() {
                     // Обновляем адаптер при получении новых данных
                     if (viewBinding.rbSend.isChecked) { // Обновляем, только если rbSend выбран
                         customAdapter?.updateOrders(
-                            ordersSend!!.map { it.addressTo }.toTypedArray(), // addressTo
-                            ordersSend!!.map { it.date.toString() }
-                                .toTypedArray(), // dateSet - конвертируйте даты в строки
                             ordersSend!!.map { "status" }
                                 .toTypedArray(), // statusSet - замените "status" на фактический статус
+                            ordersSend!!.map { it.date.toString() }
+                                .toTypedArray(), // dateSet - конвертируйте даты в строки
+                            ordersSend!!.map { it.addressTo }.toTypedArray(), // addressTo
                         )
                         customAdapter?.notifyDataSetChanged()
                     }

@@ -33,10 +33,9 @@ class MainActivity : AppCompatActivity() {
                 .navController
         NavigationUI.setupWithNavController(viewBinding.navView, navController, false)
 
-        if(Keys.authorized){
+        /*if(Keys.authorized){
             navView.isVisible = true
-        }
-        navView.isVisible = true
+        }*/
         navView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
 
 

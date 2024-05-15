@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.nikolaev.delivery.R
@@ -56,7 +57,9 @@ class AuthFragment : Fragment() {
                 currentUserFlow.collect { authResult ->
                     authResult?.let {
                         if (it) {
-                            findNavController().navigate(R.id.navigation_qrFragment)
+                            findNavController().navigate(R.id.navigation_mainFragment)
+                            val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+                            bottomNavigationView.visibility = View.VISIBLE
                             Toast.makeText(requireContext(), "Auth yes", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(requireContext(), "Auth no", Toast.LENGTH_SHORT).show()

@@ -7,6 +7,8 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Selection
+import android.text.SpannableString
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,24 +16,47 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.firebase.auth.FirebaseAuth
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentProfileBinding
-
+import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.MainViewModel
+import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.ProfileViewModel
 
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewBinding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
+    private val viewModel: ProfileViewModel by viewModels()
+
     private lateinit var ivProfile: ImageView
     private lateinit var btnChangePhoto: Button
+    var uidd : String? = null
+    var name : String? = null
 
+    var surname : String? = null
+
+    var email : String? = null
+    var user =  FirebaseAuth.getInstance().currentUser
+
+    init {
+        uidd = user?.uid
+
+
+
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ivProfile = view.findViewById(R.id.iv_profile)
         btnChangePhoto = view.findViewById(R.id.btn_change_photo)
 
+
         btnChangePhoto.setOnClickListener {
             pickImage.launch("image/*")
+        }
+        with(viewBinding){
+            uid.text = uidd
+
         }
     }
 
@@ -60,4 +85,5 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             inputStream.close()
         }
     }
+
 }

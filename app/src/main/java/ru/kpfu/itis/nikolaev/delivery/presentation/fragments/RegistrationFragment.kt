@@ -117,7 +117,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
                 currentUserFlow.collect { registrationResult ->
                     registrationResult?.let {
                         if (it) {
-                            findNavController().navigate(R.id.thirdFragment)
+                            findNavController().navigate(R.id.authFragment)
                             Toast.makeText(requireContext(), "Reg yes", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(requireContext(), "Reg no", Toast.LENGTH_SHORT).show()

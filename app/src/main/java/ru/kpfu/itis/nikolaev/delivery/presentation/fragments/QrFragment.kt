@@ -31,12 +31,14 @@ class QrFragment : Fragment(R.layout.fragment_qr) {
             val image = imageView
             val edittext = et
             val bGenerate = btn
-            bGenerate?.setOnClickListener {
+            bGenerate.setOnClickListener {
                 try {
                     val barcodeEncode: BarcodeEncoder = BarcodeEncoder()
                     val bitmap : Bitmap = barcodeEncode.encodeBitmap(edittext.getText().toString(), BarcodeFormat.QR_CODE, 750, 750)
-                    image?.setImageBitmap(bitmap)
-                } catch (e: WriterException){}
+                    image.setImageBitmap(bitmap)
+                } catch (_: WriterException){
+
+                }
             }
         }
     }

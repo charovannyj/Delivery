@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import ru.kpfu.itis.nikolaev.delivery.R
@@ -22,7 +23,6 @@ class ThirdFragment : Fragment() {
     val dbOffersGet = dbInstance.document("clients/${FirebaseAuth.getInstance().currentUser?.uid.toString()}/offers/get")
     val dbOffersSend = dbInstance.document("clients/${FirebaseAuth.getInstance().currentUser?.uid.toString()}/offers/send")
     val dbProfile = dbInstance.document("clients/${FirebaseAuth.getInstance().currentUser?.uid.toString()}")
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +44,7 @@ class ThirdFragment : Fragment() {
 
 
         //saveData()
+
 
         with(viewBinding){
             btnFastShipping.setOnClickListener{
