@@ -34,4 +34,5 @@
     <string name="send_enter">отправить</string>
     <string name="change">изменить</string>
     <string name="save_changings">сохранить изменения</string>
+    <string name="qr_code">qr-код</string>
 </resources>

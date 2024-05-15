@@ -33,7 +33,7 @@ class QrFragment : Fragment(R.layout.fragment_qr) {
             val bGenerate = btn
             bGenerate.setOnClickListener {
                 try {
-                    val barcodeEncode: BarcodeEncoder = BarcodeEncoder()
+                    val barcodeEncode = BarcodeEncoder()
                     val bitmap : Bitmap = barcodeEncode.encodeBitmap(edittext.getText().toString(), BarcodeFormat.QR_CODE, 750, 750)
                     image.setImageBitmap(bitmap)
                 } catch (_: WriterException){

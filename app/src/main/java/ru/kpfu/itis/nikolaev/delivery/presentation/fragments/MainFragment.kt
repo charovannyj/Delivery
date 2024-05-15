@@ -43,28 +43,23 @@ class MainFragment : Fragment() {
 
 
             // Инициализируем адаптер с пустыми данными
-            customAdapter = CustomAdapter(arrayOf(), arrayOf(), arrayOf())
+            customAdapter = CustomAdapter({ order ->
+                QRDialogFragment(order).show(childFragmentManager, "qr_dialog")
+            }, emptyList()) // Передаем пустой список при инициализации
             val recyclerView: RecyclerView = recyclerView
             recyclerView.adapter = customAdapter
             recyclerView.visibility = View.GONE // Изначально скрываем recyclerView
             rbGet.setOnClickListener {
                 recyclerView.visibility = View.VISIBLE
-                customAdapter?.updateOrders(
-                    ordersGet!!.map {  "в пути"  }.toTypedArray(),
-                    ordersGet!!.map { it.date.toString() }.toTypedArray(),
-                    ordersGet!!.map { it.addressTo }.toTypedArray(),
-                )
+
+                customAdapter?.updateOrders(ordersGet!!)
                 customAdapter?.notifyDataSetChanged()
             }
 
             rbSend.setOnClickListener {
                 recyclerView.visibility = View.VISIBLE
-                customAdapter?.updateOrders(
-                    ordersSend!!.map {  "status"  }.toTypedArray(),
-                    ordersSend!!.map { it.date.toString() }.toTypedArray(),
-                    ordersSend!!.map { it.addressTo }.toTypedArray(),
 
-                )
+                customAdapter?.updateOrders(ordersSend!!)
                 customAdapter?.notifyDataSetChanged()
             }
         }
@@ -78,13 +73,8 @@ class MainFragment : Fragment() {
                     ordersGet = orders.orEmpty() // Используйте orEmpty() для пустого списка
                     // Обновляем адаптер при получении новых данных
                     if (viewBinding.rbGet.isChecked) { // Обновляем, только если rbGet выбран
-                        customAdapter?.updateOrders(
-                            ordersGet!!.map { "status" }
-                                .toTypedArray(), // statusSet - замените "status" на фактический статус
-                            ordersGet!!.map { it.date.toString() }
-                                .toTypedArray(), // dateSet - конвертируйте даты в строки
-                            ordersGet!!.map { it.addressTo }.toTypedArray(), // addressTo
-                        )
+
+                        customAdapter?.updateOrders(ordersGet!!)
                         customAdapter?.notifyDataSetChanged()
                     }
                 }
@@ -94,13 +84,8 @@ class MainFragment : Fragment() {
                     ordersSend = orders.orEmpty() // Используйте orEmpty() для пустого списка
                     // Обновляем адаптер при получении новых данных
                     if (viewBinding.rbSend.isChecked) { // Обновляем, только если rbSend выбран
-                        customAdapter?.updateOrders(
-                            ordersSend!!.map { "status" }
-                                .toTypedArray(), // statusSet - замените "status" на фактический статус
-                            ordersSend!!.map { it.date.toString() }
-                                .toTypedArray(), // dateSet - конвертируйте даты в строки
-                            ordersSend!!.map { it.addressTo }.toTypedArray(), // addressTo
-                        )
+
+                        customAdapter?.updateOrders(ordersSend!!)
                         customAdapter?.notifyDataSetChanged()
                     }
                 }

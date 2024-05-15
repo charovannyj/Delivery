@@ -1,6 +1,7 @@
 package ru.kpfu.itis.nikolaev.delivery.data.model
 
 import java.io.Serial
+import java.util.Calendar
 import java.util.Date
 
 data class OrderModel(
@@ -11,5 +12,5 @@ data class OrderModel(
     val dimensions: String,
     val uidSender: String,
     val uidRecipient: String,
-    val date: Date
+    val date: Calendar
 )

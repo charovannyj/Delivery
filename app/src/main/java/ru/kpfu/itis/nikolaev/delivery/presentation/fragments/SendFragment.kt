@@ -46,6 +46,7 @@ import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSendBinding
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.SendViewModel
+import java.util.Calendar
 import java.util.Date
 
 
@@ -136,7 +137,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 val dimensions = etDimensions.text.toString()
                 val uidSender = FirebaseAuth.getInstance().currentUser?.uid.toString()
                 val uidRecipient = etRecipient.text.toString()
-                val date = Date()
+                val date = Calendar.getInstance()
                 val order = OrderModel(addressFrom,addressTo,price,dimensions,uidSender, uidRecipient,date)
                 viewModel.sendOrder(order)
             }

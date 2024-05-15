@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
+import java.util.Calendar
 import java.util.Date
 
 class OrdersRepositoryImpl : OrdersRepository {
@@ -17,7 +18,9 @@ class OrdersRepositoryImpl : OrdersRepository {
             for (it in result) {
                     val addressFrom = it.get("addressFrom") ?: ""
                     val addressTo = it.get("addressTo") ?: ""
-                    val date = it.getDate("date") ?:  Date()
+                    val date = it.getDate("date") ?: Date() //  Если date null, то используем текущую дату
+                    val calendar = Calendar.getInstance()
+                    calendar.time = date // Устанавливаем дату в Calendar
                     val dimensions = it.get("dimensions") ?: ""
                     val price = it.getLong("price") ?: 0
                     val uidRecipient = it.get("uidRecipient") ?: ""
@@ -30,7 +33,7 @@ class OrdersRepositoryImpl : OrdersRepository {
                         dimensions.toString(),
                         uidSender.toString(),
                         uidRecipient.toString(),
-                        date
+                        calendar
                     )
                     Log.e("ordermodel", order.toString())
                     orders.add(order)
