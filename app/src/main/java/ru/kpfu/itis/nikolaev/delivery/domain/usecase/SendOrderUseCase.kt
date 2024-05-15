@@ -6,8 +6,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import org.checkerframework.checker.index.qual.LengthOf
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
 import ru.kpfu.itis.nikolaev.delivery.domain.model.UserSignUpModel
+import ru.kpfu.itis.nikolaev.delivery.utils.ConvertDate
 
 class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
 ) {
@@ -18,7 +20,6 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
         return withContext(dispatcher) {
             try {
                 sendOrder(orderModel)
-                getOrder(orderModel)
                 true // Успешная авторизация
             } catch (e: Exception) {
                 false // Ошибка авторизации
@@ -26,6 +27,7 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
         }
     }
     private fun sendOrder(orderModel: OrderModel){
+        val normalDate = ConvertDate.convertFullDateToSimple(orderModel.date)
         val map: MutableMap<String, Any> = HashMap()
         map["addressFrom"] = orderModel.addressFrom
         map["addressTo"] = orderModel.addressTo
@@ -33,9 +35,10 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
         map["dimensions"] = orderModel.dimensions
         map["uidRecipient"] = orderModel.uidRecipient
         map["uidSender"] = orderModel.uidSender
-        map["date"] = orderModel.date
+        map["date"] = normalDate
+        map["status"] = orderModel.status
 
-        dbInstance.document("clients/${orderModel.uidSender}/send/${orderModel.date}").set(map)
+        dbInstance.document("clients/${orderModel.uidSender}/send/${normalDate}").set(map)
             .addOnSuccessListener { documentReference ->
                 Log.d(
                     "TAG",
@@ -43,19 +46,7 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
                 )
             }
             .addOnFailureListener { e -> Log.w("TAG", "Error adding document", e) } //заполнение данными
-
-    }
-    private fun getOrder(orderModel: OrderModel){
-        val map: MutableMap<String, Any> = HashMap()
-        map["addressFrom"] = orderModel.addressFrom
-        map["addressTo"] = orderModel.addressTo
-        map["price"] = orderModel.price
-        map["dimensions"] = orderModel.dimensions
-        map["uidRecipient"] = orderModel.uidRecipient
-        map["uidSender"] = orderModel.uidSender
-        map["date"] = orderModel.date
-
-        dbInstance.document("clients/${orderModel.uidRecipient}/get/${orderModel.date}").set(map)
+        dbInstance.document("clients/${orderModel.uidRecipient}/get/${normalDate}").set(map)
             .addOnSuccessListener { documentReference ->
                 Log.d(
                     "TAG",
@@ -63,6 +54,6 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
                 )
             }
             .addOnFailureListener { e -> Log.w("TAG", "Error adding document", e) } //заполнение данными
-
     }
+
 }

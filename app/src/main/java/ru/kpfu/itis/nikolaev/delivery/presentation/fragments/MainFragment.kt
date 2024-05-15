@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
@@ -26,6 +27,7 @@ class MainFragment : Fragment() {
     private var ordersSend: List<OrderModel>? = null
     private var dataGetting = false
     private var customAdapter: CustomAdapter? = null
+    val user = FirebaseAuth.getInstance().currentUser
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,23 +37,23 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observerData()
         with(viewBinding) {
+            viewModel.getOrders()
 
 
             // Инициализируем адаптер с пустыми данными
             customAdapter = CustomAdapter({ order ->
-                QRDialogFragment(order).show(childFragmentManager, "qr_dialog")
+                QRDialogFragment(user!!, order).show(childFragmentManager, "qr_dialog")
             }, emptyList()) // Передаем пустой список при инициализации
             val recyclerView: RecyclerView = recyclerView
             recyclerView.adapter = customAdapter
             recyclerView.visibility = View.GONE // Изначально скрываем recyclerView
             rbGet.setOnClickListener {
                 recyclerView.visibility = View.VISIBLE
-
+                viewModel.getOrders()
                 customAdapter?.updateOrders(ordersGet!!)
                 customAdapter?.notifyDataSetChanged()
             }
@@ -65,7 +67,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+
     private fun observerData() {
         with(viewModel) {
             lifecycleScope.launch {

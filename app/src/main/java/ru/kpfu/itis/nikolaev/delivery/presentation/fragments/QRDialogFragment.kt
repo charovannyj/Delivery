@@ -5,25 +5,38 @@ import android.os.Bundle
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
-class QRDialogFragment(private val order: OrderModel) : DialogFragment() {
+import ru.kpfu.itis.nikolaev.delivery.databinding.QrDialogBinding
+import ru.kpfu.itis.nikolaev.delivery.utils.ConvertDate
 
-    private val viewBinding: FragmentQrDialogBinding by viewBinding(FragmentQrDialogBinding::bind)
+class QRDialogFragment(
+    private val user : FirebaseUser,
+    private val order: OrderModel
+) : DialogFragment() {
+    private var _binding: QrDialogBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Инициализируем Dialog
+        _binding = QrDialogBinding.inflate(layoutInflater)
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(viewBinding.root) // Используем viewBinding.root
+        dialog.setContentView(binding.root)
 
         // Генерация QR-кода
-        val qrCodeData = order.date.timeInMillis.toString()
+        val array = arrayOf(user.uid, ConvertDate.convertFullDateToSimple(order.date))
+        val qrCodeData = array
         val barcodeEncoder = BarcodeEncoder()
-        val bitmap = barcodeEncoder.encodeBitmap(qrCodeData, BarcodeFormat.QR_CODE, 750, 750)
-        viewBinding.imageView.setImageBitmap(bitmap) // Используем viewBinding.imageView
+        val bitmap = barcodeEncoder.encodeBitmap(qrCodeData.contentToString(), BarcodeFormat.QR_CODE, 750, 750)
+        binding.imageView.setImageBitmap(bitmap)
 
         return dialog
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

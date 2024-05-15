@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -138,7 +139,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 val uidSender = FirebaseAuth.getInstance().currentUser?.uid.toString()
                 val uidRecipient = etRecipient.text.toString()
                 val date = Calendar.getInstance()
-                val order = OrderModel(addressFrom,addressTo,price,dimensions,uidSender, uidRecipient,date)
+                val status = "у покупателя"
+                val order = OrderModel(addressFrom,addressTo,price,dimensions,uidSender, uidRecipient,date, status)
+                Log.e("TAAAg", "товар отправляется")
                 viewModel.sendOrder(order)
             }
         }
@@ -217,7 +220,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
     }
 
-    //самая полезная вещь, показывает адрес в тосте
+    /*//самая полезная вещь, показывает адрес в тосте
     private val searchListenerEtFrom = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
             markerToAddress(response, viewBinding.etFrom)
@@ -226,15 +229,15 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         override fun onSearchError(p0: Error) {
 
         }
-    }
-    private val searchListenerEtTo = object : Session.SearchListener {
+    }*/
+    /*private val searchListenerEtTo = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
             markerToAddress(response, viewBinding.etTo)
         }
 
         override fun onSearchError(p0: Error) {
         }
-    }
+    }*/
 
     private fun requestLocationAccess() {
         locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)

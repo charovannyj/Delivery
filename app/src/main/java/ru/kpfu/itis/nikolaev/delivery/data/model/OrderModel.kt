@@ -12,5 +12,6 @@ data class OrderModel(
     val dimensions: String,
     val uidSender: String,
     val uidRecipient: String,
-    val date: Calendar
+    val date: Calendar,
+    val status: String
 )
