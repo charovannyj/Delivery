@@ -17,11 +17,7 @@ class GetOrderUseCase (
         var list : List<OrderModel>? = null
         withContext(dispatcher) {
             try {
-                Log.e("TAAAAAAAAG", "получаем getOrders в GetOrderUseCase")
-
                 list = OrdersRepositoryImpl().getOrders(uid, orderType)
-                Log.e("TAAAAAAAAG", "получили GetOrderUseCase")
-                Log.e("TAAAAAAAAG", list.toString())
 
                 true
             } catch (e: Exception) {

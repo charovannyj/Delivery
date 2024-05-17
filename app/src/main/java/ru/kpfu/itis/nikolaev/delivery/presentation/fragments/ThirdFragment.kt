@@ -51,7 +51,7 @@ class ThirdFragment : Fragment() {
                 findNavController().navigate(R.id.fastShippingFragment)
             }
             btnEnterInApp.setOnClickListener{
-                findNavController().navigate(R.id.navigation_mainFragment)
+                findNavController().navigate(R.id.mainFragment)
             }
         }
 

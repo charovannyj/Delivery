@@ -57,7 +57,7 @@ class AuthFragment : Fragment() {
                 currentUserFlow.collect { authResult ->
                     authResult?.let {
                         if (it) {
-                            findNavController().navigate(R.id.navigation_mainFragment)
+                            findNavController().navigate(R.id.mainFragment)
                             val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
                             bottomNavigationView.visibility = View.VISIBLE
                             Toast.makeText(requireContext(), "Auth yes", Toast.LENGTH_SHORT).show()

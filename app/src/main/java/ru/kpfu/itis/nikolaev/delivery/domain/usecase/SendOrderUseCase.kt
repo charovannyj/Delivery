@@ -1,6 +1,8 @@
 package ru.kpfu.itis.nikolaev.delivery.domain.usecase
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,16 +18,18 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
     val auth = FirebaseAuth.getInstance()
     val dbInstance =  FirebaseFirestore.getInstance()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend operator fun invoke(orderModel: OrderModel): Boolean {
         return withContext(dispatcher) {
             try {
                 sendOrder(orderModel)
-                true // Успешная авторизация
+                true
             } catch (e: Exception) {
-                false // Ошибка авторизации
+                false
             }
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun sendOrder(orderModel: OrderModel){
         val normalDate = ConvertDate.convertFullDateToSimple(orderModel.date)
         val map: MutableMap<String, Any> = HashMap()
@@ -45,7 +49,7 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
                     "DocumentSnapshot added with ID: "
                 )
             }
-            .addOnFailureListener { e -> Log.w("TAG", "Error adding document", e) } //заполнение данными
+            .addOnFailureListener { e -> Log.w("TAG", "Error adding document", e) }
         dbInstance.document("clients/${orderModel.uidRecipient}/get/${normalDate}").set(map)
             .addOnSuccessListener { documentReference ->
                 Log.d(
@@ -53,7 +57,7 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
                     "DocumentSnapshot added with ID: "
                 )
             }
-            .addOnFailureListener { e -> Log.w("TAG", "Error adding document", e) } //заполнение данными
+            .addOnFailureListener { e -> Log.w("TAG", "Error adding document", e) }
     }
 
 }

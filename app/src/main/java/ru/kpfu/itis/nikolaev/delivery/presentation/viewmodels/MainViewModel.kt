@@ -25,14 +25,26 @@ class MainViewModel : ViewModel() {
         get() = _ordersSendFlow
 
 
-
-    fun getOrders() {
+    fun getOrders(){
+        getOrdersGet()
+        getOrdersSend()
+    }
+    fun getOrdersGet() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
         viewModelScope.launch {
             try {
                 val resultGets =  GetOrderUseCase(Dispatchers.IO).invoke(uid, "get")
-                val resultSends = GetOrderUseCase(Dispatchers.IO).invoke(uid, "send")
                 _ordersGetFlow.emit(resultGets)
+            } catch (e: Exception) {
+                Log.e("TAG_error", "error")
+            }
+        }
+    }
+    fun getOrdersSend() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        viewModelScope.launch {
+            try {
+                val resultSends = GetOrderUseCase(Dispatchers.IO).invoke(uid, "send")
                 _ordersSendFlow.emit(resultSends)
             } catch (e: Exception) {
                 Log.e("TAG_error", "error")

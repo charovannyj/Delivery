@@ -4,6 +4,7 @@ package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -86,9 +88,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observerData()
 
         with(viewBinding) {
 
@@ -144,7 +146,10 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 Log.e("TAAAg", "товар отправляется")
                 viewModel.sendOrder(order)
             }
+            observerData()
+
         }
+
     }
 
     private fun removeMarker(marker: PlacemarkMapObject) {
@@ -168,6 +173,10 @@ class SendFragment : Fragment(R.layout.fragment_send) {
     //безумно важная вещь
     private val touchListener = object : InputListener {
         override fun onMapTap(map: Map, point: Point) {
+            mapView.mapWindow.map.move(
+                CameraPosition(point, zoomValue, 0.0f, 0.0f),
+                Animation(Animation.Type.SMOOTH, 2f), null
+            )
             viewModel.onMapTap(point){
                 markerToAddress(it, viewBinding.etFrom)
             }
@@ -182,6 +191,10 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         }
 
         override fun onMapLongTap(map: Map, point: Point) {
+            mapView.mapWindow.map.move(
+                CameraPosition(point, zoomValue, 0.0f, 0.0f),
+                Animation(Animation.Type.SMOOTH, 2f), null
+            )
             viewModel.onMapLongTap(point){
                 markerToAddress(it, viewBinding.etTo)
             }
@@ -299,6 +312,10 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                         if (startMarker != null) {
                             removeMarker(startMarker!!)
                         }
+                        mapView.mapWindow.map.move(
+                            CameraPosition(resultLocation, zoomValue, 0.0f, 0.0f),
+                            Animation(Animation.Type.SMOOTH, 2f), null
+                        )
                         startMarker = mapObjectCollection.addPlacemark(
                             resultLocation,
                             ImageProvider.fromBitmap(markerStart)
@@ -313,6 +330,10 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                         if (finishMarker != null) {
                             removeMarker(finishMarker!!)
                         }
+                        mapView.mapWindow.map.move(
+                            CameraPosition(resultLocation, zoomValue, 0.0f, 0.0f),
+                            Animation(Animation.Type.SMOOTH, 2f), null
+                        )
                         finishMarker = mapObjectCollection.addPlacemark(
                             resultLocation,
                             ImageProvider.fromBitmap(markerFinish)
@@ -321,10 +342,14 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 }
             }
             lifecycleScope.launch {
-
                 sendOrderFlow.collect { result ->
-                    result?.let {
-                        Toast.makeText(requireContext(), "заказ отправлен", Toast.LENGTH_SHORT).show()
+                    result.let {
+                        val res = String
+                        if(it=="true"){
+                            Toast.makeText(requireContext(), "Заказ принят", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.mainFragment)
+
+                        }
                     }
                 }
             }

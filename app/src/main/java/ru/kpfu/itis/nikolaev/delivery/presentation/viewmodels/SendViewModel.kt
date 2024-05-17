@@ -1,8 +1,10 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels
 
+import android.os.Build
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -34,8 +36,8 @@ import ru.kpfu.itis.nikolaev.delivery.domain.usecase.SignUpUseCase
 
 class SendViewModel : ViewModel() {
 
-    private var _sendOrderFlow = MutableStateFlow(false)
-    val sendOrderFlow: StateFlow<Boolean?>
+    private var _sendOrderFlow = MutableStateFlow("")
+    val sendOrderFlow: StateFlow<String>
         get() = _sendOrderFlow
 
     private val searchManager = SearchFactory.getInstance()
@@ -51,11 +53,12 @@ class SendViewModel : ViewModel() {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun sendOrder(orderModel: OrderModel){
         viewModelScope.launch {
             try {
                 val result = SendOrderUseCase(Dispatchers.IO).invoke(orderModel)
-                _sendOrderFlow.emit(result)
+                _sendOrderFlow.emit(result.toString())
             } catch (e: Exception) {
                 Log.e("TAG_error", "error")
             }
