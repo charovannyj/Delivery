@@ -4,17 +4,15 @@ package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -25,13 +23,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.layers.GeoObjectTapListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.GeoObjectSelectionMetadata
@@ -42,66 +39,32 @@ import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.search.Address
 import com.yandex.mapkit.search.Response
-import com.yandex.mapkit.search.SearchOptions
-import com.yandex.mapkit.search.Session
 import com.yandex.mapkit.search.ToponymObjectMetadata
-import com.yandex.runtime.Error
-
 import com.yandex.runtime.image.ImageProvider
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
-import ru.kpfu.itis.nikolaev.delivery.databinding.BottomSheetBinding
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSendBinding
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.SendViewModel
 import java.util.Calendar
-import java.util.Date
+import com.yandex.mapkit.geometry.Point
 
 
 class SendFragment : Fragment(R.layout.fragment_send) {
-    private val viewBinding: FragmentSendBinding by viewBinding(FragmentSendBinding::bind)
-    private val viewModel: SendViewModel by viewModels()
-
-    private val startLocation = Point(55.792139, 49.122135)
-    lateinit var markerFinish: Bitmap
-    lateinit var markerStart: Bitmap
-    private var startMarker: PlacemarkMapObject? = null
-    private var finishMarker: PlacemarkMapObject? = null
-    private val zoomValue = 15.0f
-    private val locationPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) {
-                requestLocationAccess()
-            }
-        }
-    private lateinit var mapView: MapView
-    private lateinit var mapObjectCollection: MapObjectCollection
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_send, container, false)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        MapKitFactory.initialize(requireContext())
-        super.onCreate(savedInstanceState)
-
-
-    }
-    private lateinit var etFrom: TextInputEditText
-    private lateinit var etTo: TextInputEditText
-    private lateinit var etDimensions: TextInputEditText
-    private lateinit var etRecipient: TextInputEditText
-    private lateinit var etPrice: TextInputEditText
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Получите ссылку на FrameLayout из разметки
+        val standardBottomSheet = view.findViewById<LinearLayout>(R.id.standard_bottom_sheet)
+
+        // Получите BottomSheetBehavior
+        val behavior = BottomSheetBehavior.from(standardBottomSheet)
+
+        // Установите начальное состояние
+        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+        // Установите высоту в свернутом состоянии
+        behavior.peekHeight = 200
 
         with(viewBinding) {
 
@@ -126,24 +89,12 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             mapview.mapWindow.map.addInputListener(touchListener) // Добавляем слушатель тапов по карте с извлечением информации
 
             mapObjectCollection = mapView.mapWindow.map.mapObjects
-            btnGetBottomSheet.setOnClickListener {
-                val bottomSheet = BottomSheetDialog(requireActivity())
-                bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                bottomSheet.setContentView(R.layout.bottom_sheet)
-                bottomSheet.window!!.setLayout(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                bottomSheet.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                etFrom =  requireActivity().findViewById(R.id.et_from)
-                etTo =  requireActivity().findViewById(R.id.et_to)
-                etDimensions =  requireActivity().findViewById(R.id.et_dimensions)
-                etRecipient =  requireActivity().findViewById(R.id.et_recipient)
-                etPrice =  requireActivity().findViewById(R.id.et_price)
 
 
 
-            }
+
+
+
             etFrom.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     viewModel.submitQueryFrom(
@@ -183,12 +134,44 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                     date,
                     status
                 )
-                Log.e("TAAAg", "товар отправляется")
                 viewModel.sendOrder(order)
             }
             observerData()
 
         }
+    }
+    private val viewBinding: FragmentSendBinding by viewBinding(FragmentSendBinding::bind)
+
+    private val viewModel: SendViewModel by viewModels()
+    private val startLocation = Point(55.792139, 49.122135)
+    lateinit var markerFinish: Bitmap
+    lateinit var markerStart: Bitmap
+    private var startMarker: PlacemarkMapObject? = null
+    private var finishMarker: PlacemarkMapObject? = null
+    private val zoomValue = 15.0f
+    private lateinit var mapView: MapView
+    private lateinit var mapObjectCollection: MapObjectCollection
+
+
+    private val locationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                requestLocationAccess()
+            }
+        }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_send, container, false)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        MapKitFactory.initialize(requireContext())
+        super.onCreate(savedInstanceState)
+
 
     }
 
@@ -218,7 +201,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 Animation(Animation.Type.SMOOTH, 2f), null
             )
             viewModel.onMapTap(point) {
-                markerToAddress(it, etFrom)
+                markerToAddress(it, viewBinding.etFrom)
             }
             //отправлять поинт на бек дял измерения расстояния
 
@@ -236,7 +219,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 Animation(Animation.Type.SMOOTH, 2f), null
             )
             viewModel.onMapLongTap(point) {
-                markerToAddress(it, etTo)
+                markerToAddress(it, viewBinding.etTo)
             }
             if (finishMarker != null) {
                 removeMarker(finishMarker!!)

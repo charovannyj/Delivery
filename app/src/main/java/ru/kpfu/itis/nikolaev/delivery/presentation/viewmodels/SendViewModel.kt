@@ -35,7 +35,9 @@ import ru.kpfu.itis.nikolaev.delivery.domain.usecase.SendOrderUseCase
 import ru.kpfu.itis.nikolaev.delivery.domain.usecase.SignUpUseCase
 
 class SendViewModel : ViewModel() {
-
+    private var _fromTextToMapFromFlow = MutableStateFlow(Unit)
+    val fromTextToMapFromFlow: StateFlow<Unit>
+        get() = _fromTextToMapFromFlow
     private var _sendOrderFlow = MutableStateFlow("")
     val sendOrderFlow: StateFlow<String>
         get() = _sendOrderFlow
@@ -102,11 +104,6 @@ class SendViewModel : ViewModel() {
             searchListenerFromTextToMapTo
         )
     }
-
-
-    private var _fromTextToMapFromFlow = MutableStateFlow(Unit)
-    val fromTextToMapFromFlow: StateFlow<Unit>
-        get() = _fromTextToMapFromFlow
 
     private val searchListenerFromTextToMapFrom = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
