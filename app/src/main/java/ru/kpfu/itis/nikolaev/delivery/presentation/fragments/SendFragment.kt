@@ -4,12 +4,15 @@ package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
@@ -22,6 +25,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
@@ -47,6 +52,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
+import ru.kpfu.itis.nikolaev.delivery.databinding.BottomSheetBinding
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSendBinding
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.SendViewModel
 import java.util.Calendar
@@ -72,6 +78,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
     private lateinit var mapView: MapView
     private lateinit var mapObjectCollection: MapObjectCollection
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,7 +93,11 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
 
     }
-
+    private lateinit var etFrom: TextInputEditText
+    private lateinit var etTo: TextInputEditText
+    private lateinit var etDimensions: TextInputEditText
+    private lateinit var etRecipient: TextInputEditText
+    private lateinit var etPrice: TextInputEditText
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,6 +126,24 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             mapview.mapWindow.map.addInputListener(touchListener) // Добавляем слушатель тапов по карте с извлечением информации
 
             mapObjectCollection = mapView.mapWindow.map.mapObjects
+            btnGetBottomSheet.setOnClickListener {
+                val bottomSheet = BottomSheetDialog(requireActivity())
+                bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                bottomSheet.setContentView(R.layout.bottom_sheet)
+                bottomSheet.window!!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                bottomSheet.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                etFrom =  requireActivity().findViewById(R.id.et_from)
+                etTo =  requireActivity().findViewById(R.id.et_to)
+                etDimensions =  requireActivity().findViewById(R.id.et_dimensions)
+                etRecipient =  requireActivity().findViewById(R.id.et_recipient)
+                etPrice =  requireActivity().findViewById(R.id.et_price)
+
+
+
+            }
             etFrom.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     viewModel.submitQueryFrom(
@@ -133,7 +162,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 }
                 false
             }
-            btnSend.setOnClickListener{
+
+
+            btnSend.setOnClickListener {
                 val addressFrom = etFrom.text.toString()
                 val addressTo = etTo.text.toString()
                 val price = etPrice.text.toString().toInt()
@@ -142,7 +173,16 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 val uidRecipient = etRecipient.text.toString()
                 val date = Calendar.getInstance()
                 val status = getString(R.string.order_status_from_the_sender)
-                val order = OrderModel(addressFrom,addressTo,price,dimensions,uidSender, uidRecipient,date, status)
+                val order = OrderModel(
+                    addressFrom,
+                    addressTo,
+                    price,
+                    dimensions,
+                    uidSender,
+                    uidRecipient,
+                    date,
+                    status
+                )
                 Log.e("TAAAg", "товар отправляется")
                 viewModel.sendOrder(order)
             }
@@ -177,8 +217,8 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 CameraPosition(point, zoomValue, 0.0f, 0.0f),
                 Animation(Animation.Type.SMOOTH, 2f), null
             )
-            viewModel.onMapTap(point){
-                markerToAddress(it, viewBinding.etFrom)
+            viewModel.onMapTap(point) {
+                markerToAddress(it, etFrom)
             }
             //отправлять поинт на бек дял измерения расстояния
 
@@ -195,8 +235,8 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 CameraPosition(point, zoomValue, 0.0f, 0.0f),
                 Animation(Animation.Type.SMOOTH, 2f), null
             )
-            viewModel.onMapLongTap(point){
-                markerToAddress(it, viewBinding.etTo)
+            viewModel.onMapLongTap(point) {
+                markerToAddress(it, etTo)
             }
             if (finishMarker != null) {
                 removeMarker(finishMarker!!)
@@ -345,8 +385,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 sendOrderFlow.collect { result ->
                     result.let {
                         val res = String
-                        if(it=="true"){
-                            Toast.makeText(requireContext(), "Заказ принят", Toast.LENGTH_SHORT).show()
+                        if (it == "true") {
+                            Toast.makeText(requireContext(), "Заказ принят", Toast.LENGTH_SHORT)
+                                .show()
                             findNavController().navigate(R.id.mainFragment)
 
                         }
