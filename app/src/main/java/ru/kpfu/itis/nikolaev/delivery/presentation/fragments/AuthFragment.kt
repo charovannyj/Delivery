@@ -29,6 +29,8 @@ class AuthFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.visibility = View.GONE
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_auth, container, false)
     }

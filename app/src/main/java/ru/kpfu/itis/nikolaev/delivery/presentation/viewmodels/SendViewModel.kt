@@ -20,6 +20,7 @@ import com.yandex.mapkit.search.Response
 import com.yandex.mapkit.search.SearchFactory
 import com.yandex.mapkit.search.SearchManagerType
 import com.yandex.mapkit.search.SearchOptions
+import com.yandex.mapkit.search.SearchType
 import com.yandex.mapkit.search.Session
 import com.yandex.mapkit.search.ToponymObjectMetadata
 import com.yandex.runtime.Error
@@ -50,8 +51,24 @@ class SendViewModel : ViewModel() {
         searchSession = searchManager.submit(
             query,
             VisibleRegionUtils.toPolygon(visibleRegion),
-            SearchOptions(),
+            SearchOptions().apply {
+                SearchType.NONE
+                disableSpellingCorrection
+                resultPageSize = 32
+            },
             searchListenerFromTextToMapFrom
+        )
+    }
+    fun submitQueryTo(query: String, visibleRegion: VisibleRegion) {
+        searchSession = searchManager.submit(
+            query,
+            VisibleRegionUtils.toPolygon(visibleRegion),
+            SearchOptions().apply {
+                SearchType.NONE
+                disableSpellingCorrection
+                resultPageSize = 32
+            },
+            searchListenerFromTextToMapTo
         )
     }
 
@@ -96,14 +113,7 @@ class SendViewModel : ViewModel() {
 
     }
 
-    fun submitQueryTo(query: String, visibleRegion: VisibleRegion) {
-        searchSession = searchManager.submit(
-            query,
-            VisibleRegionUtils.toPolygon(visibleRegion),
-            SearchOptions(),
-            searchListenerFromTextToMapTo
-        )
-    }
+
 
     private val searchListenerFromTextToMapFrom = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {

@@ -9,11 +9,10 @@
     tools:context=".presentation.fragments.AuthFragment">
 
     <com.google.android.material.textfield.TextInputLayout
-
         android:id="@+id/til_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="20dp"
+        android:layout_marginTop="200dp"
         android:layout_marginHorizontal="20dp"
         android:hint="@string/write_an_email"
         android:background="@drawable/input_til_drawable"

@@ -21,19 +21,10 @@
         android:text="@string/welcome1"
         android:textColor="@color/black"
         android:textSize="52sp"
+        android:layout_weight="1"
         />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="sans-serif-light"
-        android:text="@string/welcome2"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-         />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_registration"
         android:layout_width="match_parent"
@@ -43,6 +34,7 @@
         android:background="@drawable/dark_beige_drawable"
         android:radius="150dp"
         android:text="@string/registration"
+        android:layout_weight="1"
         />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_auth"
@@ -53,5 +45,8 @@
         android:background="@drawable/dark_beige_drawable"
         android:radius="150dp"
         android:text="@string/enter_in_app"
+        android:layout_weight="1"
+
         />
+
 </LinearLayout>

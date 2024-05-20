@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,30 +49,31 @@ import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentSendBinding
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.SendViewModel
 import java.util.Calendar
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.logo.Alignment
+import com.yandex.mapkit.logo.HorizontalAlignment
+import com.yandex.mapkit.logo.VerticalAlignment
+import ru.kpfu.itis.nikolaev.delivery.utils.Image
+import ru.kpfu.itis.nikolaev.delivery.utils.Image.Companion.createBitmapFromVector
 
 
 class SendFragment : Fragment(R.layout.fragment_send) {
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Получите ссылку на FrameLayout из разметки
         val standardBottomSheet = view.findViewById<LinearLayout>(R.id.standard_bottom_sheet)
-
-        // Получите BottomSheetBehavior
         val behavior = BottomSheetBehavior.from(standardBottomSheet)
-
-        // Установите начальное состояние
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        behavior.peekHeight = 440
 
-        // Установите высоту в свернутом состоянии
-        behavior.peekHeight = 200
+        Image.setContext(requireContext().applicationContext)
+        markerStart = createBitmapFromVector(R.drawable.location_map_pin_mark_icon_148684)!!
+        markerFinish = createBitmapFromVector(R.drawable.finish_er83q5mw52un)!!
 
         with(viewBinding) {
 
             mapView = mapview
-            markerStart = createBitmapFromVector(R.drawable.location_map_pin_mark_icon_148684)!!
-            markerFinish = createBitmapFromVector(R.drawable.finish_er83q5mw52un)!!
-
+            mapView.map.logo.setAlignment(Alignment(HorizontalAlignment.RIGHT, VerticalAlignment.TOP))
             mapObjectCollection = mapView.mapWindow.map.mapObjects
 
             mapView.mapWindow.map.addTapListener(tapListener)     //выделение домика
@@ -94,22 +96,50 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
 
 
-
+            tilFrom.setEndIconOnClickListener {
+                if (!etFrom.text.isNullOrEmpty()){
+                    viewModel.submitQueryTo(etFrom.text.toString(), mapView.mapWindow.map.visibleRegion)
+                }
+                else{
+                    Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
+                }
+            }
             etFrom.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    viewModel.submitQueryFrom(
-                        etFrom.text.toString(),
-                        mapView.mapWindow.map.visibleRegion
-                    )
+                    if (!etFrom.text.isNullOrEmpty()) {
+                        viewModel.submitQueryFrom(
+                            etFrom.text.toString(),
+                            mapView.mapWindow.map.visibleRegion
+                        )
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 false
             }
-            etTo.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+
+            tilTo.setEndIconOnClickListener {
+                if (!etFrom.text.isNullOrEmpty()) {
                     viewModel.submitQueryTo(
                         etTo.text.toString(),
                         mapView.mapWindow.map.visibleRegion
                     )
+                } else{
+                    Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
+                }
+            }
+            etTo.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (!etFrom.text.isNullOrEmpty()) {
+                        viewModel.submitQueryTo(
+                            etTo.text.toString(),
+                            mapView.mapWindow.map.visibleRegion
+                        )
+                    } else{
+                        Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 false
             }
@@ -301,18 +331,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         }
     }
 
-    private fun createBitmapFromVector(art: Int): Bitmap? {
-        val drawable = ContextCompat.getDrawable(requireContext(), art) ?: return null
-        val bitmap = Bitmap.createBitmap(
-            drawable.intrinsicWidth,
-            drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bitmap
-    }
+
 
     override fun onStart() {
         mapView.onStart()
@@ -331,6 +350,8 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             setSearchCallbackListenerFrom {
                 for (searchResult in it.collection.children) {
                     val resultLocation = searchResult.obj!!.geometry[0].point
+                    Log.e("TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG", resultLocation.toString())
+
                     if (resultLocation != null) {
                         if (startMarker != null) {
                             removeMarker(startMarker!!)
@@ -344,11 +365,15 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             ImageProvider.fromBitmap(markerStart)
                         )
                     }
+                    else{
+                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
             setSearchCallbackListenerTo {
                 for (searchResult in it.collection.children) {
                     val resultLocation = searchResult.obj!!.geometry[0].point
+                    Log.e("TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG", resultLocation.toString())
                     if (resultLocation != null) {
                         if (finishMarker != null) {
                             removeMarker(finishMarker!!)
@@ -361,6 +386,10 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             resultLocation,
                             ImageProvider.fromBitmap(markerFinish)
                         )
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT).show()
+
                     }
                 }
             }

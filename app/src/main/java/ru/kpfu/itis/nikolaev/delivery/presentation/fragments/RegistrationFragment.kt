@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.initialize
@@ -22,10 +25,10 @@ import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentRegistrationBinding
 import ru.kpfu.itis.nikolaev.delivery.domain.model.UserSignUpModel
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.RegistrationViewModel
 
-class RegistrationFragment : Fragment(R.layout.fragment_registration) {
+class RegistrationFragment : Fragment() {
+    private val viewBinding: FragmentRegistrationBinding by viewBinding(FragmentRegistrationBinding::bind)
     private val viewModel: RegistrationViewModel by viewModels()
     private lateinit var auth: FirebaseAuth
-    private val viewBinding: FragmentRegistrationBinding by viewBinding(FragmentRegistrationBinding::bind)
     private var btnRoleIsClicked: Boolean = false
     private var etEmailIsTyped: Boolean = false
     private var etPasswordIsTyped: Boolean = false
@@ -35,6 +38,16 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     fun checkReady() {
         button.isEnabled = btnRoleIsClicked && etEmailIsTyped && etPasswordIsTyped
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.visibility = View.GONE
+        return inflater.inflate(R.layout.fragment_registration, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -117,7 +130,9 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
                 currentUserFlow.collect { registrationResult ->
                     registrationResult?.let {
                         if (it) {
-                            findNavController().navigate(R.id.authFragment)
+                            findNavController().navigate(R.id.mainFragment)
+                            val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
+                            bottomNavigationView.visibility = View.VISIBLE
                             Toast.makeText(requireContext(), "Reg yes", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(requireContext(), "Reg no", Toast.LENGTH_SHORT).show()

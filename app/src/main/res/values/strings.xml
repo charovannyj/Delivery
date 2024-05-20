@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="write_your_phone_number">write_your_phone_number</string>
     <string name="write_a_count_questions">write_a_count_questions</string>
-    <string name="welcome1">добро пожаловать</string>
+    <string name="welcome1">добро пожаловать в приложение по доставке товаров</string>
     <string name="welcome2">это приложение по доставке товаров</string>
     <string name="i_am_courier">я курьер</string>
     <string name="i_am_client">я клиент</string>
@@ -38,5 +38,9 @@
     <string name="order_status_from_the_sender">у отправителя</string>
     <string name="order_status_from_the_recipient">у получателя</string>
     <string name="order_status_at_the_courier">у курьера</string>
+    <string name="get_price">рассчитать стоимость</string>
+    <string name="scan_qr">сканировать qr</string>
+    <string name="for_me">мне</string>
+    <string name="from_me">от меня</string>
 
 </resources>

@@ -22,28 +22,10 @@
         android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" >
-
         <action
-            android:id="@+id/action_registrationFragment_to_thirdFragment"
-            app:destination="@id/thirdFragment" />
+            android:id="@+id/action_registrationFragment_to_sendFragment"
+            app:destination="@id/sendFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/thirdFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.ThirdFragment"
-        android:label="fragment_third"
-        tools:layout="@layout/fragment_third" >
-        <action
-            android:id="@+id/action_thirdFragment_to_fastShippingFragment2"
-            app:destination="@id/fastShippingFragment" />
-        <action
-            android:id="@+id/action_thirdFragment_to_navigation_mainFragment"
-            app:destination="@id/mainFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/fastShippingFragment"
-        android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.FastShippingFragment"
-        android:label="fragment_fast_shipping"
-        tools:layout="@layout/fragment_fast_shipping" />
     <fragment
         android:id="@+id/mainFragment"
         android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.MainFragment"
@@ -71,14 +53,7 @@
         android:id="@+id/authFragment"
         android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.AuthFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_auth" >
-        <action
-            android:id="@+id/action_authFragment_to_thirdFragment3"
-            app:destination="@id/thirdFragment" />
-        <action
-            android:id="@+id/action_authFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_auth" />
     <fragment
         android:id="@+id/scannerFragment"
         android:name="ru.kpfu.itis.nikolaev.delivery.presentation.fragments.ScannerFragment"
