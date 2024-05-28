@@ -6,7 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".presentation.fragments.QRDialogFragment">
+    android:background="@drawable/dialog_window"
+    tools:context=".presentation.fragments.InfoSendDialogFragment"
+
+    >
     <TextView
         android:id="@+id/tv_info"
         android:text="инструкция по отправке товара"
@@ -15,18 +18,30 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginHorizontal="12dp"
+        android:textColor="@color/black"
 
-        android:background="@color/white"/>
+        />
     <TextView
         android:id="@+id/tv_2"
         android:text="для ввода начала и конца маршрута заказа вы можете воспользоваться либо вводом адреса в меню ниже(его можно поднимать и опускать), и после ввода нажать на значок поиска, либо же использовать интерфейс карты \n\nкороткое нажатие на карту задаёт метку откуда забрать заказ \nдлительное - задаёт метку куда привезти\n\nсовет: пишите адрес полностью, чтобы запрос обработался максимально точно"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
-        android:background="@color/white"
+        android:textColor="@color/black"
         android:textSize="20sp"
 
         />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_ok"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="60sp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8sp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/dark_beige_drawable"
+        android:text="@string/good"
+        android:textColor="@color/black" />
 
 
 </LinearLayout>

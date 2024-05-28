@@ -26,11 +26,6 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".data.retrofit.SecondActivity"
-            android:exported="false"
-            android:label="@string/title_activity_second"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>

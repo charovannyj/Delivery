@@ -1,6 +1,5 @@
 import java.util.Properties
 buildscript{
-    val kotlin_version by extra("1.8.20")
     repositories{
         google()
         mavenCentral()
@@ -8,7 +7,6 @@ buildscript{
     dependencies {
         classpath("com.google.gms:google-services:4.4.1")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.51.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
 
     }
 }
