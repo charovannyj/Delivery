@@ -112,15 +112,17 @@ class SendViewModel : ViewModel() {
             )
 
     }
+   /* private fun getDistance(pointFrom: Point, pointTo: Point){
+        return pointFrom.
+
+    }*/
 
 
 
     private val searchListenerFromTextToMapFrom = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
             viewModelScope.launch {
-
                 _fromTextToMapFromFlow.emit(Unit)
-
             }
             searchCallbackListenerFrom?.invoke(response)
         }
@@ -131,9 +133,7 @@ class SendViewModel : ViewModel() {
     private val searchListenerFromTextToMapTo = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
             viewModelScope.launch {
-
-                //_fromTextToMapFromFlow.emit(Unit)
-
+                //_fromTextToMapToFlow.emit(Unit)
             }
             searchCallbackListenerTo?.invoke(response)
         }
@@ -144,15 +144,13 @@ class SendViewModel : ViewModel() {
 
 
     private var searchCallbackListenerFrom: ((Response) -> Unit)? = null
-    public fun setSearchCallbackListenerFrom(callback: (Response) -> Unit) {
+    fun setSearchCallbackListenerFrom(callback: (Response) -> Unit) {
         searchCallbackListenerFrom = callback
     }
 
 
     private var searchCallbackListenerTo: ((Response) -> Unit)? = null
-    public fun setSearchCallbackListenerTo(callback: (Response) -> Unit) {
+    fun setSearchCallbackListenerTo(callback: (Response) -> Unit) {
         searchCallbackListenerTo = callback
     }
-
-
 }

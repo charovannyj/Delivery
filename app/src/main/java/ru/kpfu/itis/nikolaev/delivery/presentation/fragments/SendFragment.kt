@@ -73,34 +73,36 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         with(viewBinding) {
 
             mapView = mapview
-            mapView.map.logo.setAlignment(Alignment(HorizontalAlignment.RIGHT, VerticalAlignment.TOP))
+            mapView.map.logo.setAlignment(
+                Alignment(
+                    HorizontalAlignment.RIGHT,
+                    VerticalAlignment.TOP
+                )
+            ) // установка лого яндекса наверху справа
+
             mapObjectCollection = mapView.mapWindow.map.mapObjects
 
             mapView.mapWindow.map.addTapListener(tapListener)     //выделение домика
+            mapview.mapWindow.map.addInputListener(touchListener) // Добавляем слушатель тапов по карте с извлечением информации
+
             mapView.mapWindow.map.move(
                 CameraPosition(startLocation, zoomValue, 0.0f, 0.0f),
                 Animation(Animation.Type.SMOOTH, 2f), null
             ) //мув к заранее выбранному месту
-            val mapKit: MapKit = MapKitFactory.getInstance()
+            val mapKit: MapKit = MapKitFactory.getInstance() //вынести с помощью даггера
             requestLocationPermission()
 
             val locationMapkit =
-                mapKit.createUserLocationLayer(mapview.mapWindow) //вроде как геолокация пользоавтеля в реальном времени
+                mapKit.createUserLocationLayer(mapview.mapWindow) //вроде как геолокация пользователя в реальном времени
             locationMapkit.isVisible = true
 
-            mapview.mapWindow.map.addInputListener(touchListener) // Добавляем слушатель тапов по карте с извлечением информации
-
-            mapObjectCollection = mapView.mapWindow.map.mapObjects
-
-
-
-
-
             tilFrom.setEndIconOnClickListener {
-                if (!etFrom.text.isNullOrEmpty()){
-                    viewModel.submitQueryTo(etFrom.text.toString(), mapView.mapWindow.map.visibleRegion)
-                }
-                else{
+                if (!etFrom.text.isNullOrEmpty()) {
+                    viewModel.submitQueryFrom(
+                        etFrom.text.toString(),
+                        mapView.mapWindow.map.visibleRegion
+                    )
+                } else {
                     Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -111,22 +113,19 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             etFrom.text.toString(),
                             mapView.mapWindow.map.visibleRegion
                         )
-                    }
-                    else{
+                    } else {
                         Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
                     }
                 }
                 false
             }
-
-
             tilTo.setEndIconOnClickListener {
                 if (!etFrom.text.isNullOrEmpty()) {
                     viewModel.submitQueryTo(
                         etTo.text.toString(),
                         mapView.mapWindow.map.visibleRegion
                     )
-                } else{
+                } else {
                     Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -137,14 +136,12 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             etTo.text.toString(),
                             mapView.mapWindow.map.visibleRegion
                         )
-                    } else{
+                    } else {
                         Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
                     }
                 }
                 false
             }
-
-
             btnSend.setOnClickListener {
                 val addressFrom = etFrom.text.toString()
                 val addressTo = etTo.text.toString()
@@ -170,6 +167,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
         }
     }
+
     private val viewBinding: FragmentSendBinding by viewBinding(FragmentSendBinding::bind)
 
     private val viewModel: SendViewModel by viewModels()
@@ -223,24 +221,23 @@ class SendFragment : Fragment(R.layout.fragment_send) {
     }
 
 
-    //безумно важная вещь
+    //безумно важная вещь - юзер тапнул на карту и пошел процесс
     private val touchListener = object : InputListener {
         override fun onMapTap(map: Map, point: Point) {
             mapView.mapWindow.map.move(
                 CameraPosition(point, zoomValue, 0.0f, 0.0f),
                 Animation(Animation.Type.SMOOTH, 2f), null
-            )
+            ) //мув к введеному адресу
             viewModel.onMapTap(point) {
                 markerToAddress(it, viewBinding.etFrom)
-            }
-            //отправлять поинт на бек дял измерения расстояния
+            } //подставляем адрес в editText
 
             if (startMarker != null) {
                 removeMarker(startMarker!!)
             }
             startMarker =
                 mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerStart))
-
+            //отправлять поинт на бек дял измерения
         }
 
         override fun onMapLongTap(map: Map, point: Point) {
@@ -283,27 +280,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         } else {
             Toast.makeText(requireContext(), "Адрес не найден", Toast.LENGTH_SHORT).show()
         }
-
     }
-
-    /*//самая полезная вещь, показывает адрес в тосте
-    private val searchListenerEtFrom = object : Session.SearchListener {
-        override fun onSearchResponse(response: Response) {
-            markerToAddress(response, viewBinding.etFrom)
-        }
-
-        override fun onSearchError(p0: Error) {
-
-        }
-    }*/
-    /*private val searchListenerEtTo = object : Session.SearchListener {
-        override fun onSearchResponse(response: Response) {
-            markerToAddress(response, viewBinding.etTo)
-        }
-
-        override fun onSearchError(p0: Error) {
-        }
-    }*/
 
     private fun requestLocationAccess() {
         locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -331,8 +308,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         }
     }
 
-
-
     override fun onStart() {
         mapView.onStart()
         MapKitFactory.getInstance().onStart()
@@ -350,8 +325,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             setSearchCallbackListenerFrom {
                 for (searchResult in it.collection.children) {
                     val resultLocation = searchResult.obj!!.geometry[0].point
-                    Log.e("TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG", resultLocation.toString())
-
                     if (resultLocation != null) {
                         if (startMarker != null) {
                             removeMarker(startMarker!!)
@@ -364,16 +337,15 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             resultLocation,
                             ImageProvider.fromBitmap(markerStart)
                         )
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
             setSearchCallbackListenerTo {
                 for (searchResult in it.collection.children) {
                     val resultLocation = searchResult.obj!!.geometry[0].point
-                    Log.e("TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG", resultLocation.toString())
                     if (resultLocation != null) {
                         if (finishMarker != null) {
                             removeMarker(finishMarker!!)
@@ -386,10 +358,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             resultLocation,
                             ImageProvider.fromBitmap(markerFinish)
                         )
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT).show()
-
+                    } else {
+                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -401,7 +372,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             Toast.makeText(requireContext(), "Заказ принят", Toast.LENGTH_SHORT)
                                 .show()
                             findNavController().navigate(R.id.mainFragment)
-
                         }
                     }
                 }
