@@ -24,7 +24,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
                 <!--android:foreground="@drawable/input_til_drawable"-->
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_info"
+                android:text="@string/i"
+                android:textColor="@color/white"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/dark_beige_drawable"/>
         </androidx.cardview.widget.CardView>
     </FrameLayout>
 

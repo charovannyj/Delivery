@@ -42,5 +42,6 @@
     <string name="scan_qr">сканировать qr</string>
     <string name="for_me">мне</string>
     <string name="from_me">от меня</string>
+    <string name="i">i</string>
 
 </resources>

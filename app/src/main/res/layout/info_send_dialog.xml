@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".presentation.fragments.QRDialogFragment">
+    <TextView
+        android:id="@+id/tv_info"
+        android:text="инструкция по отправке товара"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="12dp"
+
+        android:background="@color/white"/>
+    <TextView
+        android:id="@+id/tv_2"
+        android:text="для ввода начала и конца маршрута заказа вы можете воспользоваться либо вводом адреса в меню ниже(его можно поднимать и опускать), и после ввода нажать на значок поиска, либо же использовать интерфейс карты \n\nкороткое нажатие на карту задаёт метку откуда забрать заказ \nдлительное - задаёт метку куда привезти\n\nсовет: пишите адрес полностью, чтобы запрос обработался максимально точно"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:background="@color/white"
+        android:textSize="20sp"
+
+        />
+
+
+</LinearLayout>

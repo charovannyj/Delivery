@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -61,6 +62,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showDialog()
         val standardBottomSheet = view.findViewById<LinearLayout>(R.id.standard_bottom_sheet)
         val behavior = BottomSheetBehavior.from(standardBottomSheet)
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -71,7 +73,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         markerFinish = createBitmapFromVector(R.drawable.finish_er83q5mw52un)!!
 
         with(viewBinding) {
-
+            btnInfo.setOnClickListener{
+                showDialog()
+            }
             mapView = mapview
             mapView.map.logo.setAlignment(Alignment(HorizontalAlignment.RIGHT, VerticalAlignment.TOP))
             mapObjectCollection = mapView.mapWindow.map.mapObjects
@@ -83,7 +87,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             ) //мув к заранее выбранному месту
             val mapKit: MapKit = MapKitFactory.getInstance()
             requestLocationPermission()
-
             val locationMapkit =
                 mapKit.createUserLocationLayer(mapview.mapWindow) //вроде как геолокация пользоавтеля в реальном времени
             locationMapkit.isVisible = true
@@ -98,7 +101,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
             tilFrom.setEndIconOnClickListener {
                 if (!etFrom.text.isNullOrEmpty()){
-                    viewModel.submitQueryTo(etFrom.text.toString(), mapView.mapWindow.map.visibleRegion)
+                    viewModel.submitQueryFrom(etFrom.text.toString(), mapView.mapWindow.map.visibleRegion)
                 }
                 else{
                     Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
@@ -260,7 +263,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
         }
     }
-
+    private fun showDialog(){
+        InfoSendDialogFragment().show(childFragmentManager, "info_send_dialog")
+    }
     private fun markerToAddress(response: Response, editText: EditText) {
         val addressComponents = response.collection.children.firstOrNull()?.obj
             ?.metadataContainer
