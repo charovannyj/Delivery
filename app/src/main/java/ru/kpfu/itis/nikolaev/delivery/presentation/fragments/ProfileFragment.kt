@@ -1,27 +1,25 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
-import android.app.Activity
-import android.content.Intent
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Selection
-import android.text.SpannableString
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.auth.FirebaseAuth
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentProfileBinding
-import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.MainViewModel
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.ProfileViewModel
 
 
@@ -48,15 +46,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ivProfile = view.findViewById(R.id.iv_profile)
-        btnChangePhoto = view.findViewById(R.id.btn_change_photo)
 
 
-        btnChangePhoto.setOnClickListener {
-            pickImage.launch("image/*")
-        }
         with(viewBinding){
-            uid.text = uidd
+            tvUid.text = uidd
 
+            btnChangePhoto.setOnClickListener {
+                pickImage.launch("image/*")
+            }
         }
     }
 

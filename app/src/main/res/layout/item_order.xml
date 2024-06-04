@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="88dp"
     android:layout_marginVertical="8dp"
     android:layout_weight="1"
     android:elevation="0dp"
     android:clickable="true"
-    app:cardCornerRadius="33dp"
     android:focusable="true"
+    app:cardCornerRadius="33dp"
 
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/input_til_drawable"
+        >
         <TextView
             android:text="статус заказа"
             android:id="@+id/tv_status"
@@ -24,39 +27,43 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
+
         <TextView
-            android:text="Дата создания заказа"
             android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="24dp"
-            android:textSize="20sp"
+            android:layout_marginEnd="24dp"
+            android:text="Дата создания заказа"
             android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_status"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
-            android:text="инфа(адрес куда)"
             android:id="@+id/tv_info"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="инфа(адрес куда)"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toStartOf="@+id/iv_qr"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/iv_qr"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/qrcodescan_120401"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="8dp"
+            android:src="@drawable/qrcodescan_120401"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
-

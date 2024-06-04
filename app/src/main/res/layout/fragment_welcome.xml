@@ -10,6 +10,7 @@
 
 
     <TextView
+        android:layout_marginTop="100dp"
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
         android:hyphenationFrequency="none"
         android:text="@string/welcome1"
         android:textColor="@color/black"
-        android:textSize="52sp"
+        android:textSize="48sp"
         android:layout_weight="1"
         />
 
@@ -40,12 +41,11 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/dark_beige_drawable"
         android:radius="150dp"
         android:text="@string/enter_in_app"
         android:layout_weight="1"
-
         />
 
 </LinearLayout>

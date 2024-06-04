@@ -1,7 +1,10 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.app.Dialog
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
 import ru.kpfu.itis.nikolaev.delivery.databinding.QrDialogBinding
 import ru.kpfu.itis.nikolaev.delivery.utils.ConvertDate

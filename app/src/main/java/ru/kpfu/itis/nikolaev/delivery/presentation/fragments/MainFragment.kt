@@ -1,13 +1,18 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -47,10 +52,8 @@ class MainFragment : Fragment() {
         if(ContextCompat.checkSelfPermission(requireActivity(),android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CAMERA),12)
         }
-        else{
-            findNavController().navigate(R.id.scannerFragment)
+        findNavController().navigate(R.id.scannerFragment)
 
-        }
     }
     var shimmerLayout : ShimmerFrameLayout? = null
 
@@ -82,7 +85,7 @@ class MainFragment : Fragment() {
                 viewModel.getOrdersGet()
                 //shimmerLayout?.stopShimmerAnimation()
                 //customAdapter?.updateOrders(ordersGet!!)
-               // customAdapter?.notifyDataSetChanged()
+                // customAdapter?.notifyDataSetChanged()
 
             }
 

@@ -147,7 +147,11 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 false
             }
 
-
+            btnGetPrice.setOnClickListener{
+                val sum = (viewModel.getDistance() + etPrice.text.toString().toInt()*0.05 + etDimensions.text.toString().toInt()*0.02).toInt()
+                tvResultSum.text = sum.toString() + "₽"
+                btnSend.isEnabled = true
+            }
             btnSend.setOnClickListener {
                 val addressFrom = etFrom.text.toString()
                 val addressTo = etTo.text.toString()
@@ -236,7 +240,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             viewModel.onMapTap(point) {
                 markerToAddress(it, viewBinding.etFrom)
             }
-            //отправлять поинт на бек дял измерения расстояния
+            viewModel.sendPointFromInfo(point)
 
             if (startMarker != null) {
                 removeMarker(startMarker!!)
@@ -254,12 +258,12 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             viewModel.onMapLongTap(point) {
                 markerToAddress(it, viewBinding.etTo)
             }
+            viewModel.sendPointToInfo(point)
             if (finishMarker != null) {
                 removeMarker(finishMarker!!)
             }
             finishMarker =
                 mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerFinish))
-            //отправлять поинт на бек для измерения расстояния
 
         }
     }

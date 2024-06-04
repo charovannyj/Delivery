@@ -34,6 +34,11 @@ import kotlinx.coroutines.tasks.await
 import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
 import ru.kpfu.itis.nikolaev.delivery.domain.usecase.SendOrderUseCase
 import ru.kpfu.itis.nikolaev.delivery.domain.usecase.SignUpUseCase
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.round
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class SendViewModel : ViewModel() {
     private var _fromTextToMapFromFlow = MutableStateFlow(Unit)
@@ -46,7 +51,8 @@ class SendViewModel : ViewModel() {
     private val searchManager = SearchFactory.getInstance()
         .createSearchManager(SearchManagerType.ONLINE) //важная вещь
     private var searchSession: Session? = null
-
+    private var pointFrom : Point? = null
+    private var pointTo : Point? = null
     fun submitQueryFrom(query: String, visibleRegion: VisibleRegion) {
         searchSession = searchManager.submit(
             query,
@@ -112,15 +118,29 @@ class SendViewModel : ViewModel() {
             )
 
     }
-   /* private fun getDistance(pointFrom: Point, pointTo: Point){
-        return pointFrom.
+    fun getDistance(): Int {
+        val earthRadius = 6371 // Earth radius in kilometers
+        val lat1 = Math.toRadians(pointFrom!!.latitude)
+        val lon1 = Math.toRadians(pointFrom!!.longitude)
+        val lat2 = Math.toRadians(pointTo!!.latitude)
+        val lon2 = Math.toRadians(pointTo!!.longitude)
 
-    }*/
+        val dLat = lat2 - lat1
+        val dLon = lon2 - lon1
+
+        val a = sin(dLat / 2) * sin(dLat / 2) + cos(lat1) * cos(lat2) * sin(dLon / 2) * sin(dLon / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return round(earthRadius * c).toInt()
+    }
 
 
 
     private val searchListenerFromTextToMapFrom = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
+            for (searchResult in response.collection.children) {
+                pointFrom = searchResult.obj!!.geometry[0].point
+            }
             viewModelScope.launch {
                 _fromTextToMapFromFlow.emit(Unit)
             }
@@ -132,6 +152,10 @@ class SendViewModel : ViewModel() {
     }
     private val searchListenerFromTextToMapTo = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
+            for (searchResult in response.collection.children) {
+                pointTo = searchResult.obj!!.geometry[0].point
+            }
+
             viewModelScope.launch {
                 //_fromTextToMapToFlow.emit(Unit)
             }
@@ -152,5 +176,12 @@ class SendViewModel : ViewModel() {
     private var searchCallbackListenerTo: ((Response) -> Unit)? = null
     fun setSearchCallbackListenerTo(callback: (Response) -> Unit) {
         searchCallbackListenerTo = callback
+    }
+    fun sendPointFromInfo(point: Point) {
+        pointFrom = point
+    }
+
+    fun sendPointToInfo(point: Point) {
+        pointTo = point
     }
 }

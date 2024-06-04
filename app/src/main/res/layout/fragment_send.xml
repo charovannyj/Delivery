@@ -169,6 +169,7 @@
             android:layout_marginTop="10dp">
 
             <androidx.appcompat.widget.AppCompatButton
+
                 android:id="@+id/btn_get_price"
                 android:layout_height="60dp"
                 android:layout_width="0dp"
@@ -179,11 +180,17 @@
                 android:textColor="@color/black" />
 
             <TextView
+                android:id="@+id/tv_result_sum"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:gravity="center"
                 android:layout_height="60dp" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:enabled="false"
+
                 android:id="@+id/btn_send"
                 android:layout_weight="1"
                 android:layout_width="0dp"
