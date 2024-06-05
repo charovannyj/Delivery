@@ -16,8 +16,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentProfileBinding
 import ru.kpfu.itis.nikolaev.delivery.presentation.viewmodels.ProfileViewModel
@@ -40,21 +42,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     init {
         uidd = user?.uid
 
-
-
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ivProfile = view.findViewById(R.id.iv_profile)
-
-
         with(viewBinding){
             tvUid.text = uidd
 
-            btnChangePhoto.setOnClickListener {
-                pickImage.launch("image/*")
-            }
         }
+        observerData()
     }
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -82,5 +78,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             inputStream.close()
         }
     }
-
+    private fun observerData() {
+        viewModel.getUserData(user?.uid.toString())
+        with(viewModel) {
+            lifecycleScope.launch {
+                currentUserDataFlow.collect {
+                    with(viewBinding) {
+                        etName.setText(it?.name)
+                        etSurname.setText(it?.secondName)
+                        etEmail.setText(it?.email)
+                    }
+                }
+            }
+        }
+    }
 }

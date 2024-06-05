@@ -1,6 +1,7 @@
 import java.util.Properties
-buildscript{
-    repositories{
+
+buildscript {
+    repositories {
         google()
         mavenCentral()
     }
@@ -20,13 +21,15 @@ plugins {
 
 }
 
-extra.apply{
+extra.apply {
     set("mapkitApiKey", getMapkitApiKey())
 }
 
+
 fun getMapkitApiKey(): String {
     val properties = Properties()
-    rootProject.file("C:\\Users\\nikol\\AndroidStudioProjects\\Delivery\\app\\local.properties").inputStream().use {
+    rootProject.file("C:\\Users\\nikol\\AndroidStudioProjects\\Delivery\\app\\src\\main\\local.properties")
+        .inputStream().use {
         properties.load(it)
     }
     return properties.getProperty("MAPKIT_API_KEY", "")

@@ -1,5 +1,6 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,8 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.play.integrity.internal.i
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.nikolaev.delivery.Keys
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentAuthBinding
 import ru.kpfu.itis.nikolaev.delivery.domain.model.UserSignInModel
@@ -37,20 +40,18 @@ class AuthFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        auth = FirebaseAuth.getInstance()
+
         with(viewBinding) {
             btnEnter.setOnClickListener {
                 val email = etEmail.text.toString()
                 val password = etPassword.text.toString()
                 val user = UserSignInModel(email, password)
                 viewModel.signInWithEmailAndPassword(user)
-                Log.e("TAG", FirebaseAuth.getInstance().currentUser?.uid.toString())
 
+                //viewModel.getUserData(FirebaseAuth.getInstance().currentUser?.uid.toString())
             }
         }
         observerData()
-
-
     }
 
     private fun observerData() {
@@ -67,6 +68,25 @@ class AuthFragment : Fragment() {
                             Toast.makeText(requireContext(), "Auth no", Toast.LENGTH_SHORT).show()
                         }
                     }
+                }
+
+            }
+            lifecycleScope.launch {
+                currentUserDataFlow.collect{ it ->
+                    val sharedPreferences =
+                        requireActivity().getSharedPreferences(
+                            "sharedPrefs",
+                            Context.MODE_PRIVATE
+                        )
+
+                    val editor = sharedPreferences.edit()
+                    editor.apply {
+                        putString("role", it?.role)
+                        putString("name", it?.name)
+                        putString("secondName", it?.secondName)
+                        putString("email", it?.email)
+                        putString("password", it?.password)
+                    }.apply()
                 }
             }
         }

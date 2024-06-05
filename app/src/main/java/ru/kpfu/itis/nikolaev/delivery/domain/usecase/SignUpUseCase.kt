@@ -21,9 +21,9 @@ class SignUpUseCase(
             try {
                 auth.createUserWithEmailAndPassword(user.email, user.password).await()
                 saveUser(user)
-                true // Успешная авторизация
+                true
             } catch (e: Exception) {
-                false // Ошибка авторизации
+                false
             }
         }
     }

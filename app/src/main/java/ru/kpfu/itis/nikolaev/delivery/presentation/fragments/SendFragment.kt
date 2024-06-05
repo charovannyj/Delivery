@@ -4,7 +4,6 @@ package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -13,22 +12,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.TooltipCompat
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKit
@@ -74,7 +68,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
 
 
-    @SuppressLint("SetTextI18n")
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -250,9 +244,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerStart))
                     }else{
                         viewBinding.etFrom.setText("")
-                        if (startMarker != null) {
-                            removeMarker(startMarker!!)
-                        }
                     }
 
                 }
@@ -277,9 +268,7 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                     }
                     else{
                         viewBinding.etTo.setText("")
-                        if (finishMarker != null) {
-                            removeMarker(finishMarker!!)
-                        }
+
                     }
                 }
             }
@@ -405,12 +394,11 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             lifecycleScope.launch {
                 sendOrderFlow.collect { result ->
                     result.let {
-                        val res = String
                         if (it == "true") {
                             Toast.makeText(requireContext(), "Заказ принят", Toast.LENGTH_SHORT)
                                 .show()
                             findNavController().navigate(R.id.mainFragment)
-
+                            Log.e("Tag", FirebaseAuth.getInstance().currentUser?.uid.toString())
                         }
                     }
                 }

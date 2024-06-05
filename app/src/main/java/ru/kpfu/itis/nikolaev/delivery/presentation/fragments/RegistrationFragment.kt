@@ -1,5 +1,6 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.initialize
 
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.nikolaev.delivery.Keys
 import ru.kpfu.itis.nikolaev.delivery.R
 import ru.kpfu.itis.nikolaev.delivery.databinding.FragmentRegistrationBinding
 import ru.kpfu.itis.nikolaev.delivery.domain.model.UserSignUpModel
@@ -59,12 +61,13 @@ class RegistrationFragment : Fragment() {
             rbClient.setOnClickListener {
                 btnRoleIsClicked = true
                 role = "client"
+                Keys.role = "client"
                 checkReady()
             }
             rbCourier.setOnClickListener {
                 btnRoleIsClicked = true
                 role = "courier"
-
+                Keys.role = "courier"
                 checkReady()
             }
             etEmail.addTextChangedListener(object : TextWatcher {
@@ -130,6 +133,16 @@ class RegistrationFragment : Fragment() {
                 currentUserFlow.collect { registrationResult ->
                     registrationResult?.let {
                         if (it) {
+                            val sharedPreferences =
+                                requireActivity().getSharedPreferences(
+                                    "sharedPrefs",
+                                    Context.MODE_PRIVATE
+                                )
+                            val editor = sharedPreferences.edit()
+                            editor.apply {
+                                putString("uuid", FirebaseAuth.getInstance().currentUser?.uid)
+                            }.apply()
+
                             findNavController().navigate(R.id.mainFragment)
                             val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
                             bottomNavigationView.visibility = View.VISIBLE
@@ -138,6 +151,23 @@ class RegistrationFragment : Fragment() {
                             Toast.makeText(requireContext(), "Reg no", Toast.LENGTH_SHORT).show()
                         }
                     }
+                }
+            }
+            lifecycleScope.launch {
+                currentUserDataFlow.collect{ userModel ->
+                    val sharedPreferences =
+                        requireActivity().getSharedPreferences(
+                            "sharedPrefs",
+                            Context.MODE_PRIVATE
+                        )
+                    val editor = sharedPreferences.edit()
+                    editor.apply {
+                        putString("role", userModel?.role)
+                        putString("name", userModel?.name)
+                        putString("secondName", userModel?.secondName)
+                        putString("email", userModel?.email)
+                        putString("password", userModel?.password)
+                    }.apply()
                 }
             }
         }
