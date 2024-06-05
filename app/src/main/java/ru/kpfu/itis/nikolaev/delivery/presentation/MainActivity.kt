@@ -32,17 +32,9 @@ class MainActivity : AppCompatActivity() {
             (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment)
                 .navController
         NavigationUI.setupWithNavController(viewBinding.navView, navController, false)
-
-        /*if(Keys.authorized){
-            navView.isVisible = true
-        }*/
         navView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
 
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     override fun onSupportNavigateUp(): Boolean {
