@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +65,17 @@ class MainFragment : Fragment() {
         observerData()
         with(viewBinding) {
             viewModel.getOrders()
+            val sharedPreferences =
+                requireActivity().getSharedPreferences(
+                    "sharedPrefs",
+                    Context.MODE_PRIVATE
+                )
 
+            Log.e("tag", sharedPreferences.getString("role", "o").toString())
+            Log.e("tag", sharedPreferences.getString("secondName", "o").toString())
+            if (sharedPreferences.getString("role", "o")=="courier"){
+                viewBinding.scanQr.visibility = View.VISIBLE
+            }
             scanQr.setOnClickListener {
                 checkCameraPermission()
             }

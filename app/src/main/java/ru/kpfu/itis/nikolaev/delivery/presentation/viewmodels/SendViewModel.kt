@@ -41,6 +41,7 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 class SendViewModel : ViewModel() {
+    var dialogIsShown: Boolean = false
     private var _fromTextToMapFromFlow = MutableStateFlow(Unit)
     val fromTextToMapFromFlow: StateFlow<Unit>
         get() = _fromTextToMapFromFlow
@@ -93,7 +94,6 @@ class SendViewModel : ViewModel() {
         searchSession =
             searchManager.submit(point, 20, SearchOptions(), object : Session.SearchListener {
                 override fun onSearchResponse(response: Response) {
-                    //markerToAddress(response, viewBinding.etFrom)
                     onResponse(response)
                 }
 
@@ -107,11 +107,8 @@ class SendViewModel : ViewModel() {
         searchSession =
             searchManager.submit(point, 20, SearchOptions(), object : Session.SearchListener {
                 override fun onSearchResponse(response: Response) {
-                    //markerToAddress(response, viewBinding.etTo)
                     onResponse(response)
-
                 }
-
                 override fun onSearchError(p0: Error) {
                 }
             }

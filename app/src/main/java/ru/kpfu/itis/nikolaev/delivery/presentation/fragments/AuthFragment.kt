@@ -1,5 +1,6 @@
 package ru.kpfu.itis.nikolaev.delivery.presentation.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -31,7 +32,6 @@ class AuthFragment : Fragment() {
     ): View? {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.visibility = View.GONE
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_auth, container, false)
     }
 
@@ -45,12 +45,9 @@ class AuthFragment : Fragment() {
                 val user = UserSignInModel(email, password)
                 viewModel.signInWithEmailAndPassword(user)
                 Log.e("TAG", FirebaseAuth.getInstance().currentUser?.uid.toString())
-
             }
         }
         observerData()
-
-
     }
 
     private fun observerData() {
@@ -67,6 +64,25 @@ class AuthFragment : Fragment() {
                             Toast.makeText(requireContext(), "Auth no", Toast.LENGTH_SHORT).show()
                         }
                     }
+                }
+
+            }
+            lifecycleScope.launch {
+                currentUserDataFlow.collect{ it ->
+                    val sharedPreferences =
+                        requireActivity().getSharedPreferences(
+                            "sharedPrefs",
+                            Context.MODE_PRIVATE
+                        )
+
+                    val editor = sharedPreferences.edit()
+                    editor.apply {
+                        putString("role", it?.role)
+                        putString("name", it?.name)
+                        putString("secondName", it?.secondName)
+                        putString("email", it?.email)
+                        putString("password", it?.password)
+                    }.apply()
                 }
             }
         }

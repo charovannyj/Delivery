@@ -58,11 +58,30 @@ import ru.kpfu.itis.nikolaev.delivery.utils.Image.Companion.createBitmapFromVect
 
 
 class SendFragment : Fragment(R.layout.fragment_send) {
+    private val viewBinding: FragmentSendBinding by viewBinding(FragmentSendBinding::bind)
+    private val viewModel: SendViewModel by viewModels()
+    private val startLocation = Point(55.792139, 49.122135)
+    lateinit var markerFinish: Bitmap
+    lateinit var markerStart: Bitmap
+    private var startMarker: PlacemarkMapObject? = null
+    private var finishMarker: PlacemarkMapObject? = null
+    private val zoomValue = 15.0f
+    private lateinit var mapView: MapView
+    private lateinit var mapObjectCollection: MapObjectCollection
+
+
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showDialog()
+        // Восстанавливаем значение dialogIsShown из Bundle
+
+        if (!viewModel.dialogIsShown) {
+            showDialog()
+            viewModel.dialogIsShown = true
+        }
         val standardBottomSheet = view.findViewById<LinearLayout>(R.id.standard_bottom_sheet)
         val behavior = BottomSheetBehavior.from(standardBottomSheet)
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -73,11 +92,16 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         markerFinish = createBitmapFromVector(R.drawable.finish_er83q5mw52un)!!
 
         with(viewBinding) {
-            btnInfo.setOnClickListener{
+            btnInfo.setOnClickListener {
                 showDialog()
             }
             mapView = mapview
-            mapView.map.logo.setAlignment(Alignment(HorizontalAlignment.RIGHT, VerticalAlignment.TOP))
+            mapView.map.logo.setAlignment(
+                Alignment(
+                    HorizontalAlignment.RIGHT,
+                    VerticalAlignment.TOP
+                )
+            )
             mapObjectCollection = mapView.mapWindow.map.mapObjects
 
             mapView.mapWindow.map.addTapListener(tapListener)     //выделение домика
@@ -93,17 +117,13 @@ class SendFragment : Fragment(R.layout.fragment_send) {
 
             mapview.mapWindow.map.addInputListener(touchListener) // Добавляем слушатель тапов по карте с извлечением информации
 
-            mapObjectCollection = mapView.mapWindow.map.mapObjects
-
-
-
-
-
             tilFrom.setEndIconOnClickListener {
-                if (!etFrom.text.isNullOrEmpty()){
-                    viewModel.submitQueryFrom(etFrom.text.toString(), mapView.mapWindow.map.visibleRegion)
-                }
-                else{
+                if (!etFrom.text.isNullOrEmpty()) {
+                    viewModel.submitQueryFrom(
+                        etFrom.text.toString(),
+                        mapView.mapWindow.map.visibleRegion
+                    )
+                } else {
                     Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -114,22 +134,19 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             etFrom.text.toString(),
                             mapView.mapWindow.map.visibleRegion
                         )
-                    }
-                    else{
+                    } else {
                         Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
                     }
                 }
                 false
             }
-
-
             tilTo.setEndIconOnClickListener {
                 if (!etFrom.text.isNullOrEmpty()) {
                     viewModel.submitQueryTo(
                         etTo.text.toString(),
                         mapView.mapWindow.map.visibleRegion
                     )
-                } else{
+                } else {
                     Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -140,15 +157,15 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             etTo.text.toString(),
                             mapView.mapWindow.map.visibleRegion
                         )
-                    } else{
+                    } else {
                         Toast.makeText(requireContext(), "Введите адрес", Toast.LENGTH_SHORT).show()
                     }
                 }
                 false
             }
-
-            btnGetPrice.setOnClickListener{
-                val sum = (viewModel.getDistance() + etPrice.text.toString().toInt()*0.05 + etDimensions.text.toString().toInt()*0.02).toInt()
+            btnGetPrice.setOnClickListener {
+                val sum = (viewModel.getDistance() + etPrice.text.toString()
+                    .toInt() * 0.05 + etDimensions.text.toString().toInt() * 0.02).toInt()
                 tvResultSum.text = sum.toString() + "₽"
                 btnSend.isEnabled = true
             }
@@ -174,20 +191,8 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 viewModel.sendOrder(order)
             }
             observerData()
-
         }
     }
-    private val viewBinding: FragmentSendBinding by viewBinding(FragmentSendBinding::bind)
-
-    private val viewModel: SendViewModel by viewModels()
-    private val startLocation = Point(55.792139, 49.122135)
-    lateinit var markerFinish: Bitmap
-    lateinit var markerStart: Bitmap
-    private var startMarker: PlacemarkMapObject? = null
-    private var finishMarker: PlacemarkMapObject? = null
-    private val zoomValue = 15.0f
-    private lateinit var mapView: MapView
-    private lateinit var mapObjectCollection: MapObjectCollection
 
 
     private val locationPermissionLauncher =
@@ -204,12 +209,9 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         return inflater.inflate(R.layout.fragment_send, container, false)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         MapKitFactory.initialize(requireContext())
         super.onCreate(savedInstanceState)
-
-
     }
 
     private fun removeMarker(marker: PlacemarkMapObject) {
@@ -218,8 +220,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         }
     }
 
-
-    //выделение домика
     private val tapListener = GeoObjectTapListener { geoObjectTapEvent ->
         val selectionMetadata: GeoObjectSelectionMetadata = geoObjectTapEvent
             .geoObject
@@ -229,25 +229,29 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         false
     }
 
-
-    //безумно важная вещь
     private val touchListener = object : InputListener {
         override fun onMapTap(map: Map, point: Point) {
             mapView.mapWindow.map.move(
                 CameraPosition(point, zoomValue, 0.0f, 0.0f),
                 Animation(Animation.Type.SMOOTH, 2f), null
             )
-            viewModel.onMapTap(point) {
-                markerToAddress(it, viewBinding.etFrom)
-            }
-            viewModel.sendPointFromInfo(point)
+            viewModel.onMapTap(point) { response: Response ->
+                markerToAddress(response, viewBinding.etFrom) { isAddressValid ->
+                    if (isAddressValid) {
+                        viewModel.sendPointFromInfo(point)
 
-            if (startMarker != null) {
-                removeMarker(startMarker!!)
-            }
-            startMarker =
-                mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerStart))
+                        if (startMarker != null) {
+                            removeMarker(startMarker!!)
+                        }
 
+                        startMarker =
+                            mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerStart))
+                    }else{
+                        viewBinding.etFrom.setText("")
+                    }
+
+                }
+            }
         }
 
         override fun onMapLongTap(map: Map, point: Point) {
@@ -255,64 +259,59 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                 CameraPosition(point, zoomValue, 0.0f, 0.0f),
                 Animation(Animation.Type.SMOOTH, 2f), null
             )
-            viewModel.onMapLongTap(point) {
-                markerToAddress(it, viewBinding.etTo)
-            }
-            viewModel.sendPointToInfo(point)
-            if (finishMarker != null) {
-                removeMarker(finishMarker!!)
-            }
-            finishMarker =
-                mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerFinish))
+            viewModel.onMapLongTap(point) { response: Response ->
+                markerToAddress(response, viewBinding.etTo) { isAddressValid ->
+                    if (isAddressValid) {
+                        viewModel.sendPointToInfo(point)
 
+                        if (finishMarker != null) {
+                            removeMarker(finishMarker!!)
+                        }
+                        finishMarker =
+                            mapObjectCollection.addPlacemark(point, ImageProvider.fromBitmap(markerFinish))
+                    }
+                    else{
+                        viewBinding.etTo.setText("")
+
+                    }
+                }
+            }
         }
     }
-    private fun showDialog(){
+
+    private fun showDialog() {
         InfoSendDialogFragment().show(childFragmentManager, "info_send_dialog")
     }
-    private fun markerToAddress(response: Response, editText: EditText) {
+
+    private fun markerToAddress(response: Response, editText: EditText, onAddressValidation: (Boolean) -> Unit) {
         val addressComponents = response.collection.children.firstOrNull()?.obj
             ?.metadataContainer
             ?.getItem(ToponymObjectMetadata::class.java)
             ?.address
             ?.components
+
         if (addressComponents != null) {
             val city =
                 addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.LOCALITY) }?.name
-                    ?: "Город не найден"
             val street =
                 addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.STREET) }?.name
-                    ?: "Улица не найдена"
             val houseNumber =
                 addressComponents.firstOrNull { it.kinds.contains(Address.Component.Kind.HOUSE) }?.name
-                    ?: "Номер дома не найден"
+
+            if (city == null || street == null || houseNumber == null) {
+                Toast.makeText(requireContext(), "Необходимо перевыбрать метку", Toast.LENGTH_SHORT).show()
+                onAddressValidation(false) // Адрес недействителен
+                return
+            }
 
             val addressText = "$city, $street, $houseNumber"
             editText.setText(addressText)
+            onAddressValidation(true) // Адрес действителен
         } else {
             Toast.makeText(requireContext(), "Адрес не найден", Toast.LENGTH_SHORT).show()
+            onAddressValidation(false) // Адрес недействителен
         }
-
     }
-
-    /*//самая полезная вещь, показывает адрес в тосте
-    private val searchListenerEtFrom = object : Session.SearchListener {
-        override fun onSearchResponse(response: Response) {
-            markerToAddress(response, viewBinding.etFrom)
-        }
-
-        override fun onSearchError(p0: Error) {
-
-        }
-    }*/
-    /*private val searchListenerEtTo = object : Session.SearchListener {
-        override fun onSearchResponse(response: Response) {
-            markerToAddress(response, viewBinding.etTo)
-        }
-
-        override fun onSearchError(p0: Error) {
-        }
-    }*/
 
     private fun requestLocationAccess() {
         locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -340,8 +339,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
         }
     }
 
-
-
     override fun onStart() {
         mapView.onStart()
         MapKitFactory.getInstance().onStart()
@@ -359,8 +356,6 @@ class SendFragment : Fragment(R.layout.fragment_send) {
             setSearchCallbackListenerFrom {
                 for (searchResult in it.collection.children) {
                     val resultLocation = searchResult.obj!!.geometry[0].point
-                    Log.e("TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG", resultLocation.toString())
-
                     if (resultLocation != null) {
                         if (startMarker != null) {
                             removeMarker(startMarker!!)
@@ -373,16 +368,15 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             resultLocation,
                             ImageProvider.fromBitmap(markerStart)
                         )
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
             setSearchCallbackListenerTo {
                 for (searchResult in it.collection.children) {
                     val resultLocation = searchResult.obj!!.geometry[0].point
-                    Log.e("TAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAG", resultLocation.toString())
                     if (resultLocation != null) {
                         if (finishMarker != null) {
                             removeMarker(finishMarker!!)
@@ -395,22 +389,20 @@ class SendFragment : Fragment(R.layout.fragment_send) {
                             resultLocation,
                             ImageProvider.fromBitmap(markerFinish)
                         )
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT).show()
-
+                    } else {
+                        Toast.makeText(requireContext(), "адрес не найден", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
             lifecycleScope.launch {
                 sendOrderFlow.collect { result ->
                     result.let {
-                        val res = String
                         if (it == "true") {
                             Toast.makeText(requireContext(), "Заказ принят", Toast.LENGTH_SHORT)
                                 .show()
                             findNavController().navigate(R.id.mainFragment)
-
+                            Log.e("Tag", FirebaseAuth.getInstance().currentUser?.uid.toString())
                         }
                     }
                 }
