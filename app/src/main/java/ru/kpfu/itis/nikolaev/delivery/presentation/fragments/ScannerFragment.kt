@@ -46,7 +46,7 @@ class ScannerFragment : Fragment(), ZBarScannerView.ResultHandler {
             Log.e("tag", uidRecipient.toString())
             Log.e("tag", date.toString())
             val dbInstance = FirebaseFirestore.getInstance()
-            dbInstance.document("clients/${uidSender}/send/${date}")
+            dbInstance.document("users/${uidSender}/send/${date}")
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
@@ -59,7 +59,7 @@ class ScannerFragment : Fragment(), ZBarScannerView.ResultHandler {
                         }
 
                         // Обновляем документы после получения newStatus
-                        dbInstance.document("clients/${uidSender}/send/${date}")
+                        dbInstance.document("users/${uidSender}/send/${date}")
                             .update("status", newStatus)
                             .addOnSuccessListener {
                                 Log.d("TAG", "DocumentSnapshot updated successfully (sender)")

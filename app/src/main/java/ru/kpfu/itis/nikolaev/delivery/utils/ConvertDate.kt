@@ -11,6 +11,7 @@ import java.util.TimeZone
 
 class ConvertDate {
     companion object{
+
         @RequiresApi(Build.VERSION_CODES.O)
         fun convertFullDateToSimple(date : Calendar) : String {
             val moscowDateTime = date.toInstant()

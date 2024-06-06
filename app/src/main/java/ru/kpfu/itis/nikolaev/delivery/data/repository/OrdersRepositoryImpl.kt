@@ -15,11 +15,11 @@ class OrdersRepositoryImpl : OrdersRepository {
     override suspend fun getOrders(uid: String, orderType: String): List<OrderModel> = coroutineScope {
         val orders = mutableListOf<OrderModel>()
         try {
-            val result = dbInstance.document("clients/${uid}").collection(orderType).get().await()
+            val result = dbInstance.document("users/${uid}").collection(orderType).get().await()
             for (it in result) {
                 val addressFrom = it.get("addressFrom") ?: ""
                 val addressTo = it.get("addressTo") ?: ""
-                val date = it.get("date") ?: "" //  Если date null, то используем текущую дату
+                val date = it.get("date") ?: ""
                 val dimensions = it.get("dimensions") ?: ""
                 val price = it.getLong("price") ?: 0
                 val uidRecipient = it.get("uidRecipient") ?: ""

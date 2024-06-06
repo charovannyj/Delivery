@@ -13,7 +13,8 @@ import ru.kpfu.itis.nikolaev.delivery.data.model.OrderModel
 import ru.kpfu.itis.nikolaev.delivery.domain.model.UserSignUpModel
 import ru.kpfu.itis.nikolaev.delivery.utils.ConvertDate
 
-class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
+class SendOrderUseCase (
+    private val dispatcher: CoroutineDispatcher,
 ) {
     val auth = FirebaseAuth.getInstance()
     val dbInstance =  FirebaseFirestore.getInstance()
@@ -29,6 +30,7 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
             }
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun sendOrder(orderModel: OrderModel){
         val normalDate = ConvertDate.convertFullDateToSimple(orderModel.date)
@@ -42,7 +44,7 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
         map["date"] = normalDate
         map["status"] = orderModel.status
 
-        dbInstance.document("clients/${orderModel.uidSender}/send/${normalDate}").set(map)
+        dbInstance.document("users/${orderModel.uidSender}/send/${normalDate}").set(map)
             .addOnSuccessListener { documentReference ->
                 Log.d(
                     "TAG",
@@ -50,7 +52,7 @@ class SendOrderUseCase (private val dispatcher: CoroutineDispatcher,
                 )
             }
             .addOnFailureListener { e -> Log.w("TAG", "Error adding document", e) }
-        dbInstance.document("clients/${orderModel.uidRecipient}/get/${normalDate}").set(map)
+        dbInstance.document("users/${orderModel.uidRecipient}/get/${normalDate}").set(map)
             .addOnSuccessListener { documentReference ->
                 Log.d(
                     "TAG",

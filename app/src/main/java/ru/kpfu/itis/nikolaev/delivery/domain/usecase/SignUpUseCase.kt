@@ -21,9 +21,9 @@ class SignUpUseCase(
             try {
                 auth.createUserWithEmailAndPassword(user.email, user.password).await()
                 saveUser(user)
-                true // Успешная авторизация
+                true
             } catch (e: Exception) {
-                false // Ошибка авторизации
+                false
             }
         }
     }
@@ -36,7 +36,7 @@ class SignUpUseCase(
         map["role"] = user.role
         map["password"] = passwordHash
 
-        dbInstance.document("clients/${FirebaseAuth.getInstance().currentUser?.uid.toString()}").set(map)
+        dbInstance.document("users/${FirebaseAuth.getInstance().currentUser?.uid.toString()}").set(map)
             .addOnSuccessListener { documentReference ->
                 Log.d(
                     "TAG",

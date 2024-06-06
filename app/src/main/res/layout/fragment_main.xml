@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".presentation.fragments.MainFragment">
     <androidx.appcompat.widget.AppCompatButton
+        android:visibility="gone"
         android:id="@+id/scan_qr"
         android:visibility="gone"
         android:layout_width="match_parent"
